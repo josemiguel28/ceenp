@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'CEENP - Panel de Administración',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>CEENP</b>',
+    'logo_mini' => '<b>C</b>',
+    'logo_img' => 'img/logo.png', // Ruta de tu logo (opcional)
     'logo_img_class' => 'brand-image img-circle elevation-3',
-    'logo_img_xl' => null,
-    'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'CEENP Logo',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -92,6 +92,9 @@ return [
             'width' => 50,
             'height' => 50,
         ],
+    ],
+    'adminlte_css' => [
+        'css/custom.css',
     ],
 
     /*
@@ -299,83 +302,57 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
+
+        // Inicio
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
-        ],
-        [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => true,
+            'text' => 'Inicio',
+            'url'  => '/inicio',
+            'icon' => 'fas fa-home',
         ],
 
-        // Sidebar items:
+        //usuarios
         [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
-        ],
-        [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        ],
-        [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text' => 'multilevel',
-            'icon' => 'fas fa-fw fa-share',
+            'text' => 'Estudiantes',
+            'icon' => 'fas fa-users',
             'submenu' => [
                 [
-                    'text' => 'level_one',
+                    'text' => 'Agregar un estudiante',
                     'url' => '#',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
+                    'text' => 'Listar estudiantes',
                     'url' => '#',
                 ],
             ],
         ],
+        [
+            'text' => 'Maestros',
+            'icon' => 'fas fa-users',
+            'submenu' => [
+                [
+                    'text' => 'Agregar un maestro',
+                    'url' => '#',
+                ],
+                [
+                    'text' => 'Listar maestros',
+                    'url' => '#',
+                ],
+            ],
+        ],
+        // biblioteca
+        [
+            'text' => 'Biblioteca',
+            'url'  => '/inicio',
+            'icon' => 'fas fa-library',
+        ],
+        [
+            'text' => 'Boletas',
+            'url'  => '/inicio',
+            'icon' => 'fas fa-library',
+        ],
+
+
+
         ['header' => 'labels'],
         [
             'text' => 'important',

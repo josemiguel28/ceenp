@@ -1,0 +1,19 @@
+/* Cambia los colores del texto en el encabezado */
+.brand-link {
+    font-size: 1.2rem;
+    padding: 0.8rem 1rem;
+}
+
+
+.brand-link .brand-text {
+    font-weight: bold;
+    color: #003366;
+}
+.brand-link .brand-text.font-weight-light {
+    color: #887600;
+}
+
+/* Cambia los íconos del menú */
+.nav-sidebar .nav-icon {
+    color: #6b6b6b; /* Iconos grises */
+}

@@ -12,7 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
+    @stack('styles')
 </head>
 <body class="font-sans text-gray-900 antialiased container mx-auto">
 
