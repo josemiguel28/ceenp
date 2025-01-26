@@ -10,11 +10,12 @@ class EstudianteController extends Controller
     public function index()
     {
 
-        $estudiantes = User::where('role_id', 2)->get();
+        $STUDENT_ROLE_ID = 2;
+        $students = User::where('role_id', $STUDENT_ROLE_ID)->orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.estudiantes.index',
             [
-                'estudiantes' => $estudiantes
+                'students' => $students
             ]);
     }
 }
