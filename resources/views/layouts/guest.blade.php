@@ -15,6 +15,7 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     @stack('styles')
+
 </head>
 <body class="font-sans text-gray-900 antialiased container mx-auto">
 

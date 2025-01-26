@@ -10,11 +10,11 @@ class AdminController extends Controller
     public function index()
     {
         $crrntUser = auth()->user()->name;
-        $totalStudents = User::where('role_id', 2)->count();
+        $students = User::where('role_id', 2)->get();
 
         return view('admin.dashboard', [
             'crrntUser' => $crrntUser,
-            'totalStudents' => $totalStudents
+            'students' => $students
         ]);
     }
 }
