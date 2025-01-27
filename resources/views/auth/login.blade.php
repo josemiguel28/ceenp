@@ -32,14 +32,14 @@
                                 stroke-linejoin="round"/>
                         </g>
                     </svg>
-                    <input
+                    <x-text-input
                         id="email"
                         type="email"
                         name="email"
                         class="block w-full pl-10 pr-4 !py-3.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         placeholder="Tu correo"
                         required
-                        :value="old('email')"
+                        :value="isset($email) ? $email : old('email')"
                         autofocus
                         autocomplete="username"
                     />

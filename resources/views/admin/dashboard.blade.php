@@ -53,7 +53,10 @@
     </div>
 
     <!-- Acceso rapido-->
-    <h2 class="text-xl font-semibold">Acceso rápido</h2>
+    <h5 class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+        Acceso rápido
+    </h5>
+
     <p class="text-gray-500">Accede rápidamente a estas funcionalidades.</p>
 
     <div class="grid grid-cols-1 mt-8 mb-16 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -74,9 +77,9 @@
             </div>
             <div>
                 <p class="text-xl font-bold text-gray-800"> Agregar un estudiante</p>
-                <p class="text-gray-600">Registra un estudiante en el sistema.</p>
+                <p class="text-gray-600 text-sm">Registra un estudiante en el sistema.</p>
 
-                <a class="float-right mt-4 font-semibold" href="#">Agregar +</a>
+                <a class="float-right mt-4 font-semibold" href="{{ route('estudiantes.create') }}">Agregar +</a>
             </div>
 
 
@@ -92,7 +95,10 @@
             </div>
             <div>
                 <p class="text-xl font-bold text-gray-800"> Agregar un maestro</p>
-                <p class="text-gray-600">Registra un maestro en el sistema.</p>
+                <p class="text-gray-600 text-sm">Registra un maestro en el sistema.
+                    <br>
+                    <br>
+                </p>
 
                 <a class="float-right mt-4 font-semibold" href="#">Agregar +</a>
             </div>
@@ -108,18 +114,13 @@
             </div>
             <div>
                 <p class="text-xl font-bold text-gray-800"> Agregar una materia</p>
-                <p class="text-gray-600">Registra una materia en el sistema.</p>
+                <p class="text-gray-600 text-sm">Registra una materia en el sistema.</p>
 
                 <a class="float-right mt-4 font-semibold" href="#">Agregar +</a>
             </div>
         </div>
     </div>
 
-
-    <!-- Tabla de estudiantes
-    <h2 class="text-xl font-semibold mt-8">Estudiantes registrados</h2>
-    <p class="text-gray-500">Estos son los estudiantes registrados en el sistema.</p>
- -->
 
     <x-students-table :students="$students"/>
 </x-app-layout>

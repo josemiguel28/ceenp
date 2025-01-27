@@ -1,5 +1,11 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
+
+    @if(request()->routeIs('dashboard'))
+        <h3 class="p-2 bg-yellow-200 text-center text-yellow-800 font-semibold rounded-md shadow-md lg:hidden">
+            Para una mejor experiencia, visita el sitio web desde tu laptop 💻
+        </h3>
+    @endif
     <div class="mx-auto p-8 px-4 sm:px-6 lg:px-8">
 
         <div class="flex justify-between h-16">

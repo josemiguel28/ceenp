@@ -47,7 +47,14 @@ class User extends Authenticatable
         ];
     }
 
-    public function role(){
+    public function role()
+    {
         return $this->belongsTo(Role::class);
     }
+
+    public function materias()
+    {
+        return $this->belongsToMany(Materia::class, 'materia_student');
+    }
+
 }

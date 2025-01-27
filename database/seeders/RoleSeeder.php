@@ -20,12 +20,12 @@ class RoleSeeder extends Seeder
         ]);
 
         DB::table('roles')->insert([
-            'name' => 'student',
+            'name' => 'estudiante',
             'description' => 'Student',
         ]);
 
         DB::table('roles')->insert([
-            'name' => 'teacher',
+            'name' => 'maestro',
             'description' => 'Teacher',
         ]);
     }

@@ -7,6 +7,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
@@ -15,6 +18,8 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     @stack('styles')
+
+    @stack('scripts')
 </head>
 
 <body class="font-sans antialiased">
@@ -28,9 +33,10 @@
     <x-admin-sidebar-responsive></x-admin-sidebar-responsive>
 
     <!-- Page Content -->
-    <main class="flex-1 p-12">
+    <main class="flex-1 p-12 w-full">
         {{ $slot }}
     </main>
 </div>
+
 </body>
 </html>

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/admin/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
+    Route::get('/admin/estudiantes/create', [EstudianteController::class, 'create'])->name('estudiantes.create');
+    Route::post('/admin/estudiantes', [EstudianteController::class, 'store'])->name('estudiantes.store');
 });
 
 

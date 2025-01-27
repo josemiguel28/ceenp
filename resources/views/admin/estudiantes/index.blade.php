@@ -10,7 +10,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="mb-4">
-                <a href="#">
+                <a href=" {{ route('estudiantes.create') }}">
                     <x-primary-button>
                         {{ __('Nuevo Estudiante') }} +
                     </x-primary-button>

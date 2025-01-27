@@ -14,9 +14,15 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('auth.login');
+        $email = $request->query('email');
+
+        return view('auth.login',
+            [
+                'email' => $email
+            ]
+        );
     }
 
     /**
@@ -24,6 +30,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+
         $request->authenticate();
 
         $request->session()->regenerate();
@@ -32,7 +39,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('dashboard', absolute: false));
         }
 
-        return dd('No eres administrador');
+        return dd('Eres un estudiante');
 
     }
 
