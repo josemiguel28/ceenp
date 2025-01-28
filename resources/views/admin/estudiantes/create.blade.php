@@ -1,9 +1,20 @@
 <x-app-layout>
 
     <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Registrar Estudiante</h2>
-        <form action="{{ route('estudiantes.store') }}" method="POST" class="space-y-6" novalidate>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+            {{ isset($estudiante) ? 'Editar Estudiante' : 'Registrar Estudiante' }}
+        </h2>
+        <form
+            action="{{ isset($estudiante) ? route('estudiantes.update', $estudiante->id) : route('estudiantes.store') }}"
+            method="POST"
+            class="space-y-6"
+            novalidate
+        >
             @csrf
+            @if(isset($estudiante))
+                @method('PUT')
+            @endif
+
             <!-- Campo: Nombre -->
             <div>
                 <x-input-label for="name" :value="__('Nombre del estudiante')"/>
@@ -13,7 +24,7 @@
                     id="name"
                     class="block w-full !py-3.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     placeholder="Ingresa el nombre completo"
-                    :value="old('name')"
+                    :value="old('name', $estudiante->name ?? '')"
                     required
                 />
                 @error('name')
@@ -30,7 +41,7 @@
                     id="email"
                     class="block w-full !py-3.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     placeholder="ejemplo@correo.com"
-                    :value="old('email')"
+                    :value="old('email', $estudiante->email ?? '')"
                     required
                 />
                 @error('email')
@@ -47,7 +58,7 @@
                     id="matricula"
                     class="block w-full !py-3.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     placeholder="Ingresa la matrícula del estudiante"
-                    :value="old('matricula')"
+                    :value="old('matricula', $estudiante->matricula ?? '')"
                     required
                 />
                 @error('matricula')
@@ -55,9 +66,30 @@
                 @enderror
             </div>
 
+            @if(request()->routeIs('estudiantes.edit'))
+                <!-- Campo: Estado -->
+                <div>
+                    <x-input-label for="estado" :value="__('Estado del estudiante')"/>
+                    <select
+                        name="status"
+                        id="estado"
+                        class="block w-full !py-3.5 border border-gray-300 mb-6 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    >
+                        <option value="">Seleccione el estado del estudiante</option>
+                        <option value="1" {{ old('estado', $estudiante->status ?? '') == 1 ? 'selected' : '' }}>Activo
+                        </option>
+                        <option value="0" {{ old('estado', $estudiante->status ?? '') == 0 ? 'selected' : '' }}>
+                            Inactivo
+                        </option>
+                    </select>
+                </div>
+            @endif
+
             <!-- Campo: Materias -->
-            <div x-data="dropdown({ items: {{ $materias->toJson() }} })" @click.away="hideDropdown()">
-                <x-input-label for="matricula" :value="__('Seleccione las materias del estudiante')"/>
+            <div
+                x-data="dropdown({ items: {{ $materias->toJson() }}, selectedItems: {{ json_encode($materiasSeleccionadas ?? []) }} })"
+                @click.away="hideDropdown()">
+                <x-input-label for="materias" :value="__('Seleccione las materias del estudiante')"/>
                 <div class="relative mt-1">
                     <input
                         type="text"
@@ -65,7 +97,6 @@
                         x-model="search"
                         x-on:focus="showDropdown()"
                         class="block w-full !py-3.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        required
                     />
 
                     <ul
@@ -105,13 +136,13 @@
             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
             @enderror
 
-            <!-- Botón: Crear -->
+            <!-- Botón: Guardar -->
             <div class="text-right">
                 <x-primary-button
                     type="submit"
                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                    Crear Estudiante
+                    {{ isset($estudiante) ? 'Guardar Cambios' : 'Crear Estudiante' }}
                 </x-primary-button>
             </div>
         </form>
@@ -119,11 +150,12 @@
 
     @push('scripts')
         <script>
-            function dropdown({items}) {
+            function dropdown({items, selectedItems = []}) {
+
                 return {
                     items,
                     search: '',
-                    selectedItems: [],
+                    selectedItems: selectedItems || [], // Inicializa con las materias seleccionadas en la edición
                     isOpen: false,
                     get filteredItems() {
                         return this.search === ''
@@ -150,9 +182,8 @@
                     },
                 };
             }
+
         </script>
     @endpush
 
 </x-app-layout>
-
-

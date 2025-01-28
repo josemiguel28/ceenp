@@ -38,7 +38,7 @@ class EstudianteController extends Controller
         ]);
 
         //genera una contraseña aleatoria
-        $password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') , 0 , 10 );
+        $password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10);
 
         // Crear el estudiante
         $estudiante = User::create([
@@ -58,4 +58,55 @@ class EstudianteController extends Controller
 
         return redirect()->route('estudiantes.index')->with('success', 'Estudiante creado con éxito.');
     }
+
+    public function edit($id)
+    {
+        $estudiante = User::findOrFail($id); // Encuentra el estudiante por su ID
+        $materias = Materia::all(); // Todas las materias disponibles
+        $selectedMaterias = $estudiante->materias()
+            ->select('materias.id', 'materias.nombre')  // Explicitly mention the table
+            ->get();
+
+
+        return view('admin.estudiantes.create', [
+            'estudiante' => $estudiante,
+            'materias' => $materias,
+            'materiasSeleccionadas' => $selectedMaterias,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'matricula' => 'required|string|unique:users,matricula,' . $id,
+            'materias' => 'array|required'
+        ]);
+
+        $estudiante = User::findOrFail($id); // Encuentra el estudiante por su ID
+
+        $estudiante->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'matricula' => $request->matricula,
+            'status' => $request->status,
+        ]);
+
+        // Asignar materias al estudiante
+        if ($request->has('materias')) {
+            $estudiante->materias()->sync($request->materias);
+        }
+
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante actualizado con éxito.');
+    }
+
+    public function destroy($id)
+    {
+        $estudiante = User::findOrFail($id); // Encuentra el estudiante por su ID
+        $estudiante->delete();
+
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante eliminado con éxito.');
+    }
+
 }
