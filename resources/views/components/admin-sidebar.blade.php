@@ -47,7 +47,7 @@
                 {{ __('Maestros') }}
             </x-nav-link>
 
-            <x-nav-link :href="route('maestros.index')" :active="request()->routeIs('maestros.index')">
+            <x-nav-link :href="route('biblioteca.index')" :active="request()->routeIs('maestros.index')">
                 <span class="mr-3">
                     <!-- library Icon -->
                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><g fill="none"
