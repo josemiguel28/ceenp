@@ -1,0 +1,1 @@
+ln -s /home/u507315597/domains/moccasin-okapi-166798.hostingersite.com/public_html/storage/app/public /home/u507315597/domains/moccasin-okapi-166798.hostingersite.com/public_html/public/storage

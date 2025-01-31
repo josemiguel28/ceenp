@@ -31,28 +31,35 @@
                 {{ __('Estudiantes') }}
             </x-nav-link>
 
-            <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
+            <x-nav-link :href="route('maestros.index')" :active="request()->routeIs('maestros.index')">
                 <span class="mr-3">
-                    <!-- Analytics Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M11 3a8 8 0 0116 0v7a8 8 0 01-16 0V3zm5 15h-4v7h4v-7zm-9 3h4v-3H7v3zm-4 3h4v-5H3v5z"/>
-                    </svg>
+                    <!-- Student Icon -->
+               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+                   <g fill="none"
+                      stroke="#333333"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      color="#333333"><path
+                           d="M2 2h14c1.886 0 2.828 0 3.414.586S20 4.114 20 6v6c0 1.886 0 2.828-.586 3.414S17.886 16 16 16H9m1-9.5h6M2 17v-4c0-.943 0-1.414.293-1.707S3.057 11 4 11h2m-4 6h4m-4 0v5m4-5v-6m0 6v5m0-11h6"/><path
+                           d="M6 6.5a2 2 0 1 1-4 0a2 2 0 0 1 4 0"/></g></svg>
                 </span>
-                <span>Analytics</span>
-            </a>
-            <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded">
+                {{ __('Maestros') }}
+            </x-nav-link>
+
+            <x-nav-link :href="route('maestros.index')" :active="request()->routeIs('maestros.index')">
                 <span class="mr-3">
-                    <!-- Messages Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M3 5a3 3 0 013-3h12a3 3 0 013 3v10a3 3 0 01-3 3H9l-6 3V5z"/>
-                    </svg>
+                    <!-- library Icon -->
+               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><g fill="none"
+                                                                                                     stroke="#000000"
+                                                                                                     stroke-linecap="round"
+                                                                                                     stroke-linejoin="round"
+                                                                                                     stroke-width="2"><path
+                           d="M7 5.667A2.667 2.667 0 0 1 9.667 3h8.666A2.667 2.667 0 0 1 21 5.667v8.666A2.667 2.667 0 0 1 18.333 17H9.667A2.667 2.667 0 0 1 7 14.333z"/><path
+                           d="M4.012 7.26A2 2 0 0 0 3 8.997v10c0 1.1.9 2 2 2h10c.75 0 1.158-.385 1.5-1M11 7h5m-5 3h6m-6 3h3"/></g></svg>
                 </span>
-                <span>Messages</span>
-            </a>
+                {{ __('Biblioteca') }}
+            </x-nav-link>
         </nav>
     </div>
 </aside>

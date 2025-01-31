@@ -1,18 +1,25 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BibliotecaController;
 use App\Http\Controllers\EstudianteController;
+use App\Http\Controllers\FileHandlerController;
+use App\Http\Controllers\MaestroController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])->group(function () {
+    // Ruta del dashboard
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard');
-    Route::get('/admin/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
-    Route::get('/admin/estudiantes/create', [EstudianteController::class, 'create'])->name('estudiantes.create');
-    Route::post('/admin/estudiantes/store', [EstudianteController::class, 'store'])->name('estudiantes.store');
-    Route::get('/admin/estudiantes/{id}/edit', [EstudianteController::class, 'edit'])->name('estudiantes.edit');
-    Route::put('/admin/estudiantes/{id}/update', [EstudianteController::class, 'update'])->name('estudiantes.update');
-    Route::delete('/admin/estudiantes/{id}/destroy', [EstudianteController::class, 'destroy'])->name('estudiantes.destroy');
+
+    // Rutas de los estudiantes CRUD
+    Route::resource('/admin/estudiantes', EstudianteController::class)->names('estudiantes');
+    // Rutas de los maestros CRUD
+    Route::resource('/admin/maestros', MaestroController::class)->names('maestros');
+    // Rutas de biblioteca
+    Route::resource('/admin/biblioteca', BibliotecaController::class)->names('biblioteca');
+    // Rutas de los recursos
+    Route::post('/uploads', [FileHandlerController::class, 'uploadResource'])->name('upload.resources');
 });
 
 

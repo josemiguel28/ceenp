@@ -14,11 +14,17 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
 
+    <!-- tailwind styles -->
+    <link href="{{ asset('/build/build/app--Zh3Ut5e.css') }}" rel="stylesheet">
+
+    <!-- Js -->
+    <script src="{{ asset('/build/build/app-CvSG40sc.js') }}" defer></script>
+
     <!-- Scripts -->
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
-    @stack('styles')
 
+    @stack('styles')
     @stack('scripts')
 </head>
 

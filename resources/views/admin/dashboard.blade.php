@@ -32,7 +32,7 @@
                 </svg>
             </div>
             <div>
-                <p class="text-3xl font-bold text-gray-800">30</p>
+                <p class="text-3xl font-bold text-gray-800">{{ $teachers->count() }}</p>
                 <p class="text-gray-600">Maestros registrados</p>
             </div>
         </div>

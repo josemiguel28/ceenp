@@ -8,23 +8,28 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class EstudianteController extends Controller
+class MaestroController extends Controller
 {
+    //
+
     public function index()
     {
-        $STUDENT_ROLE_ID = 2;
-        $students = User::where('role_id', $STUDENT_ROLE_ID)->orderBy('created_at', 'desc')->paginate(10);
+        $MAESTRO_ROLE_ID = 3;
+        $maestros = User::where('role_id', $MAESTRO_ROLE_ID)->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('admin.estudiantes.index',
+        return view('admin.maestros.index',
             [
-                'students' => $students
+                'teachers' => $maestros
             ]);
     }
 
     public function create()
     {
         $materias = Materia::all(); // Obtener todas las materias
-        return view('admin.estudiantes.create', compact('materias'));
+        return view('admin.maestros.form',
+            [
+                'materias' => $materias
+            ]);
     }
 
     public function store(Request $request)
@@ -40,37 +45,41 @@ class EstudianteController extends Controller
         $password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10);
 
         // Crear el estudiante
-        $estudiante = User::create([
+        $maestro = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'matricula' => $request->matricula,
-            'role_id' => 2, // Rol asignado automáticamente
+            'role_id' => 3, // Rol asignado automáticamente
             'password' => bcrypt($password),
         ]);
 
+
         // Asignar materias al estudiante
         if ($request->has('materias')) {
-            $estudiante->materiasStudents()->sync($request->materias);
+            $maestro->materiasTeachers()->sync($request->materias);
         }
 
-        Mail::to($estudiante->email)->send(new SendStudentCredentials($estudiante, $password));
+        Mail::to($maestro->email)->send(new SendStudentCredentials($maestro, $password));
 
-        return redirect()->route('estudiantes.index')->with('success', 'Estudiante creado con éxito.');
+        return redirect()->route('maestros.index')->with('success', 'Maestro creado con éxito.');
     }
 
     public function edit($id)
     {
-        $estudiante = User::findOrFail($id);
+
+        $maestro = User::findOrFail($id);
+
         $materias = Materia::all();
-        $selectedMaterias = $estudiante->materiasStudents()
+        $selectedMaterias = $maestro->materiasTeachers()
             ->select('materias.id', 'materias.nombre')  // obtiene las materias del estudiante
             ->get();
 
-        return view('admin.estudiantes.create', [
-            'estudiante' => $estudiante,
-            'materias' => $materias,
-            'materiasSeleccionadas' => $selectedMaterias,
-        ]);
+        return view('admin.maestros.form',
+            [
+                'maestro' => $maestro,
+                'materiasSeleccionadas' => $selectedMaterias,
+                'materias' => $materias
+            ]);
     }
 
     public function update(Request $request, $id)
@@ -79,12 +88,12 @@ class EstudianteController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'matricula' => 'required|string|unique:users,matricula,' . $id,
-            'materias' => 'array|required'
+            'materias' => 'array|required',
         ]);
 
-        $estudiante = User::findOrFail($id);
+        $maestro = User::findOrFail($id);
 
-        $estudiante->update([
+        $maestro->update([
             'name' => $request->name,
             'email' => $request->email,
             'matricula' => $request->matricula,
@@ -93,18 +102,18 @@ class EstudianteController extends Controller
 
         // Asignar materias al estudiante
         if ($request->has('materias')) {
-            $estudiante->materiasStudents()->sync($request->materias);
+            $maestro->materiasTeachers()->sync($request->materias);
         }
 
-        return redirect()->route('estudiantes.index')->with('success', 'Estudiante actualizado con éxito.');
+        return redirect()->route('maestros.index')->with('success', 'Maestro actualizado con éxito.');
     }
 
     public function destroy($id)
     {
-        $estudiante = User::findOrFail($id); // Encuentra el estudiante por su ID
-        $estudiante->delete();
+        $maestro = User::findOrFail($id);
+        $maestro->delete();
 
-        return redirect()->route('estudiantes.index')->with('success', 'Estudiante eliminado con éxito.');
+        return redirect()->route('maestros.index')->with('success', 'Maestro eliminado con éxito.');
     }
 
 }

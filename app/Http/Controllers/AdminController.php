@@ -11,13 +11,16 @@ class AdminController extends Controller
     {
 
         $STUDENT_ROLE_ID = 2;
+        $TEACHER_ROLE_ID = 3;
 
         $crrntUser = auth()->user()->name;
         $students = User::where('role_id', $STUDENT_ROLE_ID)->orderBy('created_at', 'desc')->paginate(10);
+        $teachers = User::where('role_id', $TEACHER_ROLE_ID);
 
         return view('admin.dashboard', [
             'crrntUser' => $crrntUser,
-            'students' => $students
+            'students' => $students,
+            'teachers' => $teachers
         ]);
     }
 }
