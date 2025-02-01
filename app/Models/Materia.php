@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Materia extends Model
 {
-    protected $fillable = ['nombre', 'codigo', 'descripcion'];
+    use HasFactory;
+    protected $fillable = ['nombre', 'semestre', 'codigo', 'descripcion'];
 
     // Relación con estudiantes (tabla pivote: materia_student)
     public function estudiantes()

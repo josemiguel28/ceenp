@@ -6,6 +6,7 @@ use App\Http\Controllers\BoletasController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\FileHandlerController;
 use App\Http\Controllers\MaestroController;
+use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('/admin/boletas', BoletasController::class)->names('boletas')->except(['edit', 'update', 'show']);
     // Rutas de los recursos
     Route::post('/uploads', [FileHandlerController::class, 'uploadResource'])->name('upload.resources');
+    // ruta de materias
+    Route::resource('/admin/materias', MateriaController::class)->names('materias');
 });
 
 

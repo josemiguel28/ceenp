@@ -53,7 +53,6 @@ class MaestroController extends Controller
             'password' => bcrypt($password),
         ]);
 
-
         // Asignar materias al estudiante
         if ($request->has('materias')) {
             $maestro->materiasTeachers()->sync($request->materias);

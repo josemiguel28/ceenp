@@ -46,8 +46,8 @@
                 </svg>
             </div>
             <div>
-                <p class="text-3xl font-bold text-gray-800">30</p>
-                <p class="text-gray-600">Materias registrados</p>
+                <p class="text-3xl font-bold text-gray-800">{{ $materias->count() }}</p>
+                <p class="text-gray-600">Materias registradas</p>
             </div>
         </div>
     </div>
@@ -100,7 +100,7 @@
                     <br>
                 </p>
 
-                <a class="float-right mt-4 font-semibold" href="#">Agregar +</a>
+                <a class="float-right mt-4 font-semibold" href="{{ route('maestros.create') }}">Agregar +</a>
             </div>
         </div>
 
@@ -116,7 +116,7 @@
                 <p class="text-xl font-bold text-gray-800"> Agregar una materia</p>
                 <p class="text-gray-600 text-sm">Registra una materia en el sistema.</p>
 
-                <a class="float-right mt-4 font-semibold" href="#">Agregar +</a>
+                <a class="float-right mt-4 font-semibold" href="{{ route('materias.create') }}">Agregar +</a>
             </div>
         </div>
     </div>
