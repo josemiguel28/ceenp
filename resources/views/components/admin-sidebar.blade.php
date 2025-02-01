@@ -47,18 +47,32 @@
                 {{ __('Maestros') }}
             </x-nav-link>
 
-            <x-nav-link :href="route('biblioteca.index')" :active="request()->routeIs('maestros.index')">
+            <x-nav-link :href="route('biblioteca.index')" :active="request()->routeIs('biblioteca.index')">
                 <span class="mr-3">
                     <!-- library Icon -->
                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><g fill="none"
                                                                                                      stroke="#000000"
                                                                                                      stroke-linecap="round"
                                                                                                      stroke-linejoin="round"
-                                                                                                     stroke-width="2"><path
-                           d="M7 5.667A2.667 2.667 0 0 1 9.667 3h8.666A2.667 2.667 0 0 1 21 5.667v8.666A2.667 2.667 0 0 1 18.333 17H9.667A2.667 2.667 0 0 1 7 14.333z"/><path
-                           d="M4.012 7.26A2 2 0 0 0 3 8.997v10c0 1.1.9 2 2 2h10c.75 0 1.158-.385 1.5-1M11 7h5m-5 3h6m-6 3h3"/></g></svg>
+                                                                                                     stroke-width="1.5"><path
+                           d="M14 11.998C14 9.506 11.683 7 8.857 7H7.143C4.303 7 2 9.238 2 11.998c0 2.378 1.71 4.368 4 4.873a5.3 5.3 0 0 0 1.143.124"/><path
+                           d="M10 11.998c0 2.491 2.317 4.997 5.143 4.997h1.714c2.84 0 5.143-2.237 5.143-4.997c0-2.379-1.71-4.37-4-4.874A5.3 5.3 0 0 0 16.857 7"/></g></svg>
                 </span>
                 {{ __('Biblioteca') }}
+            </x-nav-link>
+
+            <x-nav-link :href="route('boletas.index')" :active="request()->routeIs('boletas.index')">
+                <span class="mr-3">
+                    <!-- Boleta Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><g fill="none"
+                                                                                                    stroke="#000000"
+                                                                                                    stroke-linecap="round"
+                                                                                                    stroke-linejoin="round"
+                                                                                                    stroke-width="1.5"><path
+                          d="M16.5 4H8a4 4 0 0 0-4 4v8.5a4 4 0 0 0 4 4h6.843a4 4 0 0 0 2.829-1.172l1.656-1.656a4 4 0 0 0 1.172-2.829V8a4 4 0 0 0-4-4"/><path
+                          d="M20.5 14H17a3 3 0 0 0-3 3v3.5M8 8h7.5M8 12h5"/></g></svg>
+                </span>
+                {{ __('Boletas') }}
             </x-nav-link>
         </nav>
     </div>

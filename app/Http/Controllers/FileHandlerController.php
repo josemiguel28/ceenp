@@ -11,13 +11,12 @@ class FileHandlerController extends Controller
         // Obtener el contexto desde el formulario de dropzone
         $context = $request->input('context', 'otros');
 
-        $folder = 'otros'; // Valor por defecto
-
-        if ($context === 'biblioteca.create') {
-            $folder = 'recursos';
-        } elseif ($context === 'estudiantes.tareas') {
-            $folder = 'tareas';
-        }
+        $folder = match ($context) {
+            'biblioteca.create' => 'recursos',
+            'estudiantes.tareas' => 'tareas',
+            'boletas.create' => 'boletas',
+            default => 'otros',
+        };
 
         if ($request->hasFile('file')) {
             $path = $request->file('file')->store($folder, 'public');

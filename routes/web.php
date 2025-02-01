@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BibliotecaController;
+use App\Http\Controllers\BoletasController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\FileHandlerController;
 use App\Http\Controllers\MaestroController;
@@ -18,6 +19,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('/admin/maestros', MaestroController::class)->names('maestros');
     // Rutas de biblioteca
     Route::resource('/admin/biblioteca', BibliotecaController::class)->names('biblioteca');
+    // Rutas de boletas
+    Route::resource('/admin/boletas', BoletasController::class)->names('boletas')->except(['edit', 'update', 'show']);
     // Rutas de los recursos
     Route::post('/uploads', [FileHandlerController::class, 'uploadResource'])->name('upload.resources');
 });
