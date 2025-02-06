@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendStudentCredentials extends Mailable
+class SendUserCredentials extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -34,7 +34,7 @@ class SendStudentCredentials extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Credenciales de acceso',
+            subject: 'Credenciales de acceso | CEENP',
         );
     }
 
@@ -44,7 +44,7 @@ class SendStudentCredentials extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.student_credentials',
+            view: 'emails.user_credentials',
             with: [
                 'student' => $this->student,
                 'password' => $this->password,

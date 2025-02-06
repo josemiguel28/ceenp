@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\SendStudentCredentials;
+use App\Mail\SendUserCredentials;
 use App\Models\Materia;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -58,7 +58,7 @@ class MaestroController extends Controller
             $maestro->materiasTeachers()->sync($request->materias);
         }
 
-        Mail::to($maestro->email)->send(new SendStudentCredentials($maestro, $password));
+        Mail::to($maestro->email)->send(new SendUserCredentials($maestro, $password));
 
         return redirect()->route('maestros.index')->with('success', 'Maestro creado con éxito.');
     }

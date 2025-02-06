@@ -7,6 +7,13 @@
 
 </head>
 <body style="background-color: #f3f4f6; margin: 0; padding: 20px; font-family: Arial, sans-serif;">
+
+<div
+    style="max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+>
+    <h1> CEENP Neurociencias </h1>
+</div>
+
 <div
     style="max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
     <h1 style="font-size: 24px; font-weight: bold; color: #1f2937; margin-bottom: 10px;">

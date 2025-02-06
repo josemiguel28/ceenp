@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\SendStudentCredentials;
+use App\Mail\SendUserCredentials;
 use App\Models\Materia;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class EstudianteController extends Controller
+class CreateEstudianteController extends Controller
 {
     public function index()
     {
@@ -53,7 +53,7 @@ class EstudianteController extends Controller
             $estudiante->materiasStudents()->sync($request->materias);
         }
 
-        Mail::to($estudiante->email)->send(new SendStudentCredentials($estudiante, $password));
+        Mail::to($estudiante->email)->send(new SendUserCredentials($estudiante, $password));
 
         return redirect()->route('estudiantes.index')->with('success', 'Estudiante creado con éxito.');
     }

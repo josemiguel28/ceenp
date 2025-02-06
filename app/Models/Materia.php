@@ -22,4 +22,10 @@ class Materia extends Model
         return $this->belongsToMany(User::class, 'materia_teacher');
     }
 
+    // Relación con tareas
+    public function tareas()
+    {
+        return $this->hasMany(Tarea::class);
+    }
+
 }

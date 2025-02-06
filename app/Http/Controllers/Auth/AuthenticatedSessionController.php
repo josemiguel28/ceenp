@@ -30,17 +30,25 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        if ($request->user()->role_id == 1) {
-            return redirect()->intended(route('dashboard', absolute: false));
+        $ADMIN_ROLE_ID = 1;
+        $ESTUDIANTE_ROLE_ID = 2;
+        $MAESTRO_ROLE_ID = 3;
+
+        // Redirigir según el rol del usuario
+        switch ($request->user()->role_id) {
+            case $ADMIN_ROLE_ID:
+                return redirect()->intended(route('dashboard', absolute: false));
+            case $ESTUDIANTE_ROLE_ID:
+                return redirect()->intended(route('estudiante.dashboard.index', absolute: false));
+            case $MAESTRO_ROLE_ID:
+                return redirect()->intended(route('maestro.dashboard', absolute: false));
+            default:
+                return redirect()->intended(route('/', absolute: false));
         }
-
-        return dd('Eres un estudiante');
-
     }
 
     /**

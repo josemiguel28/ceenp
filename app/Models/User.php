@@ -64,5 +64,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Materia::class, 'materia_teacher');
     }
+    public function tareasAsignadas()
+    {
+        return $this->hasMany(Tarea::class);
+    }
+
+    public function tareasEntregadas()
+    {
+        return $this->belongsToMany(Tarea::class, 'tarea_user');
+    }
 
 }
