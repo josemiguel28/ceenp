@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('tareas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->text('descripcion');
-            $table->date('fecha_entrega');
-            $table->foreignId('materia_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('archivo');
-            $table->enum('estatus', ['pendiente', 'entregada', 'calificada'])->default('pendiente');
-            $table->integer('calificacion')->nullable();
-            $table->text('observaciones')->nullable();
+            $table->string('titulo'); // Título de la tarea
+            $table->text('descripcion')->nullable(); // Descripción de la tarea
+            $table->dateTime('fecha_entrega'); // Fecha de entrega
+            $table->string('archivo')->nullable(); // Ruta del archivo (opcional)
+            $table->foreignId('materia_id')->constrained()->onDelete('cascade'); // Relación con la materia
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Relación con el maestro que creó la tarea
             $table->timestamps();
         });
     }

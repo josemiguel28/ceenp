@@ -13,7 +13,8 @@ class FileHandlerController extends Controller
 
         $folder = match ($context) {
             'biblioteca.create' => 'recursos',
-            'estudiantes.tareas' => 'tareas',
+            'estudiante.create.task' => 'entregas',
+            'maestro.create.task' => 'tareas',
             'boletas.create' => 'boletas',
             default => 'otros',
         };

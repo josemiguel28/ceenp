@@ -45,7 +45,7 @@ class AuthenticatedSessionController extends Controller
             case $ESTUDIANTE_ROLE_ID:
                 return redirect()->intended(route('estudiante.dashboard.index', absolute: false));
             case $MAESTRO_ROLE_ID:
-                return redirect()->intended(route('maestro.dashboard', absolute: false));
+                return redirect()->intended(route('maestro.dashboard.index', absolute: false));
             default:
                 return redirect()->intended(route('/', absolute: false));
         }

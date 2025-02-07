@@ -21,12 +21,6 @@ const dropzone = new Dropzone("#dropzone", {
 
     headers: {
         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-    },
-    init: function () {
-        this.on("success", function (file, response) {
-            // Asignar la ruta del archivo subido al campo oculto
-            document.getElementById('archivo_path').value = response.path;
-        });
     }
 });
 
