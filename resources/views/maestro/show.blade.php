@@ -39,60 +39,68 @@
                 <h2 class="text-xl font-bold mb-4">Actividades Recientes</h2>
                 <ul class="space-y-6">
                     @foreach($tareas as $tarea)
-                        <li class="flex items-center w-auto justify-between bg-gray-100 p-4 rounded-lg">
+                        <li class="flex flex-wrap items-center justify-between bg-gray-100 p-4 rounded-lg gap-4 md:flex-nowrap">
 
-                            <form action="{{ route('maestro.destroy.task', $tarea->id) }}" method="post" onsubmit="return confirmDelete()">
+                            {{-- Botón de eliminar con confirmación --}}
+                            <form action="{{ route('maestro.destroy.task', $tarea->id) }}" method="post"
+                                  onsubmit="return confirmDelete()">
                                 @csrf
                                 @method('DELETE')
 
-                                <button type="submit" class="flex items-center justify-center">
-                                    <span class="ml-0 mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                                             viewBox="0 0 24 24"><path
-                                                fill="none" stroke="#e11d48" stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="1.5"
-                                                d="m18 9l-.84 8.398c-.127 1.273-.19 1.909-.48 2.39a2.5 2.5 0 0 1-1.075.973C15.098 21 14.46 21 13.18 21h-2.36c-1.279 0-1.918 0-2.425-.24a2.5 2.5 0 0 1-1.076-.973c-.288-.48-.352-1.116-.48-2.389L6 9m7.5 6.5v-5m-3 5v-5m-6-4h4.615m0 0l.386-2.672c.112-.486.516-.828.98-.828h3.038c.464 0 .867.342.98.828l.386 2.672m-5.77 0h5.77m0 0H19.5"/></svg>
-                                    </span>
+                                <button type="submit"
+                                        class="flex items-center justify-center text-red-500 hover:text-red-700 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+                                        <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                              stroke-linejoin="round" stroke-width="1.5"
+                                              d="m18 9l-.84 8.398c-.127 1.273-.19 1.909-.48 2.39a2.5 2.5 0 0 1-1.075.973C15.098 21 14.46 21 13.18 21h-2.36c-1.279 0-1.918 0-2.425-.24a2.5 2.5 0 0 1-1.076-.973c-.288-.48-.352-1.116-.48-2.389L6 9m7.5 6.5v-5m-3 5v-5m-6-4h4.615m0 0l.386-2.672c.112-.486.516-.828.98-.828h3.038c.464 0 .867.342.98.828l.386 2.672m-5.77 0h5.77m0 0H19.5"/>
+                                    </svg>
                                 </button>
-
                             </form>
 
-
-                            <span class="text-gray-600 mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"><g
-                                        fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="1.5" color="#000000"><path
-                                            d="M3.5 9.368c0-3.473 0-5.21 1.025-6.289S7.2 2 10.5 2h3c3.3 0 4.95 0 5.975 1.08C20.5 4.157 20.5 5.894 20.5 9.367v5.264c0 3.473 0 5.21-1.025 6.289S16.8 22 13.5 22h-3c-3.3 0-4.95 0-5.975-1.08C3.5 19.843 3.5 18.106 3.5 14.633z"/><path
-                                            d="m8 2l.082.493c.2 1.197.3 1.796.72 2.152C9.22 5 9.827 5 11.041 5h1.917c1.213 0 1.82 0 2.24-.355c.42-.356.52-.955.719-2.152L16 2M8 16h4m-4-5h8"/></g></svg>
+                            {{-- Ícono de tarea --}}
+                            <span class="text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24">
+                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                       stroke-width="1.5">
+                                        <path
+                                            d="M3.5 9.368c0-3.473 0-5.21 1.025-6.289S7.2 2 10.5 2h3c3.3 0 4.95 0 5.975 1.08C20.5 4.157 20.5 5.894 20.5 9.367v5.264c0 3.473 0 5.21-1.025 6.289S16.8 22 13.5 22h-3c-3.3 0-4.95 0-5.975-1.08C3.5 19.843 3.5 18.106 3.5 14.633z"/>
+                                        <path
+                                            d="m8 2l.082.493c.2 1.197.3 1.796.72 2.152C9.22 5 9.827 5 11.041 5h1.917c1.213 0 1.82 0 2.24-.355c.42-.356.52-.955.719-2.152L16 2M8 16h4m-4-5h8"/>
+                                    </g>
+                                </svg>
                             </span>
 
-                            <div class="gap-8 flex justify-content-around max-w-80">
-                                <a href="{{ route('maestro.edit.task', $tarea->id) }}" class="hover:underline truncate"
+                            {{-- Información de la tarea --}}
+                            <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
+                                <a href="{{ route('maestro.edit.task', $tarea->id) }}"
+                                   class="font-semibold hover:underline truncate w-full md:w-auto"
                                    title="{{ $tarea->titulo }}">{{ $tarea->titulo }}</a>
-                                <a class="text-yellow-500 "
-                                   href="{{ route('maestro.edit.task', $tarea->id) }}">Editar</a>
+
+                                <div class="flex gap-4">
+                                    <a href="{{ route('maestro.edit.task', $tarea->id) }}"
+                                       class="text-yellow-500 hover:text-yellow-600 transition">
+                                        Editar
+                                    </a>
+                                    <a href="{{ route('maestro.view.submissions', $tarea->id) }}"
+                                       class="text-blue-500 hover:text-blue-600 transition">
+                                        Ver entregas
+                                    </a>
+                                </div>
                             </div>
 
-                            <span
-                                class="text-gray-500 ml-auto">{{ \Carbon\Carbon::parse($tarea->fecha_entrega)->translatedFormat('d F Y h:i A') }}</span>
+                            {{-- Fecha de entrega --}}
+                            <span class="text-gray-500 text-sm md:text-base whitespace-nowrap">
+                                {{ \Carbon\Carbon::parse($tarea->fecha_entrega)->translatedFormat('d F Y h:i A') }}
+                             </span>
 
                         </li>
+
                     @endforeach
                 </ul>
             </div>
 
             <!-- Panel lateral -->
             <div class="space-y-6">
-                <!-- Tareas Enviadas -->
-                <div class="bg-white p-6 rounded-lg shadow-md text-center border">
-                    <h3 class="text-lg font-bold">Tareas enviadas</h3>
-                    <p class="text-xl font-bold text-red-500">1 / 3</p>
-                    <div class="w-full bg-gray-200 h-2 rounded-full mt-2">
-                        <div class="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                             style="width: 1%;"></div>
-                    </div>
-                </div>
                 <!-- Recursos del curso -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h3 class="text-lg font-bold mb-4">Recursos de este curso</h3>

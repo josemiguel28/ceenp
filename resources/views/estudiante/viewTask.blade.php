@@ -17,7 +17,7 @@
             {{ $tarea->descripcion }}
         </p>
 
-        <div class="flex flex-col text-gray-600 mt-3 space-x-8 space-y-4">
+        <div class="flex flex-col text-gray-600 mt-3 space-y-4 mb-8">
             <div class="flex items-center space-x-1">
                 <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path fill="#eab308"
@@ -27,8 +27,10 @@
                 @if ($tareaVencida)
                         <span class="text-red-500">Fecha de entrega vencida</span>
                     @else
-                        Se entrega <span
-                            class="font-semibold"> {{ \Carbon\Carbon::parse($tarea->fecha_entrega)->translatedFormat('d F Y h:i A') }} </span>
+                        Fecha de entrega:
+                        <span class="font-semibold">
+                            {{ \Carbon\Carbon::parse($tarea->fecha_entrega)->translatedFormat('d F Y h:i A') }}
+                        </span>
                     @endif
             </span>
             </div>
@@ -39,26 +41,78 @@
                         stroke="#DDB204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
 
-                <span class="">Sin calificar aún</span>
+                @if($tarea->calificacion)
+                    <p>Tu calificación: <strong>{{ $tarea->calificacion }} / 10</strong></p>
+
+                @else
+                    <p class="text-gray-500">Sin calificar</p>
+                @endif
+
+            </div>
+
+            <div class="flex items-center space-x-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
+                    <g fill="#eab308" fill-rule="evenodd" clip-rule="evenodd">
+                        <path
+                            d="M26 33h3.5C36.404 33 42 27.404 42 20.5S36.404 8 29.5 8h-11C11.596 8 6 13.596 6 20.5c0 7.915 5.217 12.754 10.924 15.726c2.835 1.477 5.69 2.43 7.849 3.015q.665.18 1.227.313zm2 9s-.756-.11-2-.392C20.236 40.3 4 35.305 4 20.5C4 12.492 10.492 6 18.5 6h11C37.508 6 44 12.492 44 20.5S37.508 35 29.5 35H28z"/>
+                        <path
+                            d="M24 22a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 2a3 3 0 1 0 0-6a3 3 0 0 0 0 6m8-2a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 2a3 3 0 1 0 0-6a3 3 0 0 0 0 6m-16-2a1 1 0 1 0 0-2a1 1 0 0 0 0 2m0 2a3 3 0 1 0 0-6a3 3 0 0 0 0 6"/>
+                    </g>
+                </svg>
+
+                @if($tarea->calificacion)
+                    <p>Observacion del maestro: <strong>{{ $tarea->comentario_maestro }}</strong></p>
+
+                @else
+                    <p class="text-gray-500">Sin observaciones</p>
+                @endif
+
             </div>
         </div>
 
-        <!-- Dropzone para subir archivos -->
-        <form action="{{ route('upload.resources') }}"
-              method="POST"
-              enctype="multipart/form-data"
-              class="dropzone"
-              id="dropzone"
-        >
-            @csrf
-            <input type="hidden" name="context" value="estudiante.create.task">
-            <!-- Envía el contexto para guardar el PDF -->
-            <div class="fallback">
-                <input name="file" type="file"/>
-            </div>
-        </form>
+        @if(!$tareaVencida)
+            <!-- Dropzone para subir archivos -->
+            <form action="{{ route('upload.resources') }}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  class="dropzone"
+                  id="dropzone"
+            >
+                @csrf
+                <input type="hidden" name="context" value="estudiante.create.task">
+                <!-- Envía el contexto para guardar el PDF -->
+                <div class="fallback">
+                    <input name="file" type="file"/>
+                </div>
 
-        <p class="mt-4 text-gray-600 font-semibold">Observación</p>
+            </form>
+
+            <span class="text-gray-600 text-regular font-semibold">El archivo que enviaste</span>
+            <a href="{{ asset('storage/' . $tarea->archivo) }}" target="_blank" class="text-blue-500">
+                Ver archivo
+            </a>
+
+            @error('archivo_path')
+            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+            @enderror
+
+            <p class="mt-4 text-gray-600 font-semibold">Observación (opcional)</p>
+
+            <form action="{{ route('estudiante.send.task', $tarea) }}" method="POST">
+                @csrf
+
+                <!-- Campo oculto para la ruta del archivo -->
+                <input type="hidden" name="archivo_path" id="archivo_path">
+                <textarea name="observacion" id="observacion"
+                          class="w-full h-24 bg-gray-100 p-2 rounded-md shadow-inner"
+                          placeholder="Escribe aquí tus observaciones">{{ $tarea->comentario_alumno }}</textarea>
+
+                <x-primary-button>
+                    Enviar tarea
+                </x-primary-button>
+            </form>
+        @endif
+
 
     </div>
 

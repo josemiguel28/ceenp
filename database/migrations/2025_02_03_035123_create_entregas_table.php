@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('tarea_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('archivo');
+            $table->string('comentario_alumno')->nullable();
+            $table->string('comentario_maestro')->nullable();
+            $table->decimal('calificacion', 5,2)->nullable();
             $table->timestamps();
         });
     }
