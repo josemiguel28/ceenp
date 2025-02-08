@@ -8,6 +8,8 @@ use App\Models\Materia;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class EstudianteController extends Controller
 {
@@ -15,26 +17,42 @@ class EstudianteController extends Controller
     {
         $materias = auth()->user()->materiasStudents;
 
-        return view('estudiante.index', compact('materias' ));
+        return view('estudiante.index', compact('materias'));
     }
 
     public function show($materia)
     {
-        $materia = Materia::find($materia);
+        $materia = Materia::findOrFail($materia);
         $tareas = $materia->tareas;
 
-        // Para cada tarea, verificar si el estudiante ya la ha entregado
-        $tareas->each(function ($tarea) {
-            $tarea->entregada = $tarea->entregas->contains('user_id', Auth::id());
+        // Contar tareas entregadas
+        $tareasEntregadas = 0;
+
+        $tareas->each(function ($tarea) use (&$tareasEntregadas) {
+            if ($tarea->entregas->contains('user_id', Auth::id())) {
+                $tarea->entregada = true;
+                $tareasEntregadas++;
+            } else {
+                $tarea->entregada = false;
+            }
         });
 
-        //$material = $materia->material;
+        // Calcular porcentaje de progreso
+        $totalTareas = $tareas->count();
+        $progreso = $totalTareas > 0 ? round(($tareasEntregadas / $totalTareas) * 100) : 0;
 
-        return view('estudiante.show', compact('materia', 'tareas' /*'material'*/));
+        return view('estudiante.show', compact('materia', 'tareas', 'progreso'));
     }
 
-    public function viewTask($tarea){
+
+    public function viewTask($tarea)
+    {
         $tarea = Tarea::find($tarea);
+
+        // Si la tarea no existe, redirigir o mostrar un error
+        if (!$tarea) {
+            return redirect()->route('estudiante.dashboard.index')->with('error', 'Tarea no encontrada.');
+        }
 
         $fechaActual = now();
         $tareaVencida = $fechaActual->greaterThan($tarea->fecha_entrega); // Si la fecha actual es mayor, la tarea está vencida.
@@ -49,7 +67,6 @@ class EstudianteController extends Controller
         $tarea->comentario_maestro = $entrega ? $entrega->comentario_maestro : null; // Si tiene comentario del maestro
         $tarea->comentario_alumno = $entrega ? $entrega->comentario_alumno : null; // Si tiene comentario del maestro
         $tarea->archivo = $entrega ? $entrega->archivo : null; // Si tiene archivo entregado
-
         return view('estudiante.viewTask', compact('tarea', 'tareaVencida'));
     }
 
@@ -64,7 +81,7 @@ class EstudianteController extends Controller
         // Validar los datos del formulario
         $request->validate([
             'archivo_path' => 'required', // Solo PDF, máximo 2MB
-            'comentario' => 'nullable|string|max:500',
+            'observacion' => 'nullable|string|max:500',
         ]);
 
         // Crear la entrega
@@ -78,5 +95,34 @@ class EstudianteController extends Controller
         // Redirigir con un mensaje de éxito
         return redirect()->route('estudiante.show', $tarea->materia)
             ->with('success', 'Tarea entregada correctamente.');
+    }
+
+    public function updateEntrega(Request $request, Tarea $tarea)
+    {
+        $request->validate([
+            'archivo_path' => 'required',
+            'observacion' => 'nullable|string|max:500',
+        ]);
+
+        // Buscar la entrega existente
+        $entrega = Entrega::where('tarea_id', $tarea->id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        if ($entrega->calificacion) {
+            return redirect()->route('estudiante.view.task', $tarea->id)
+                ->with('error', 'No puedes actualizar una tarea que ya ha sido calificada.');
+        }
+
+        if ($entrega->archivo !== $request->archivo_path) {
+            File::delete(public_path('storage/' . $entrega->archivo));
+        }
+
+        $entrega->archivo = $request->archivo_path;
+        $entrega->comentario_alumno = $request->observacion;
+        $entrega->save();
+
+        return redirect()->route('estudiante.show', $tarea->materia)
+            ->with('success', 'Tarea actualizada correctamente.');
     }
 }

@@ -16,13 +16,13 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         $IS_ADMIN = 'admin';
 
-        if(Auth::user()->role->name !== $IS_ADMIN ) {
-            return redirect()->route('dashboard');
+        if (!Auth::check() || Auth::user()->role->name !== $IS_ADMIN) {
+            return redirect()->route('login');
         }
 
         return $next($request);
     }
+
 }

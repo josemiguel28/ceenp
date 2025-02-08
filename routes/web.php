@@ -15,7 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\Estudiante;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     // Ruta del dashboard
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
@@ -43,6 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::get('estudiante/tareas/{tarea}', [EstudianteController::class, 'viewTask'])->name('estudiante.view.task');
     // Ruta para procesar la entrega
     Route::post('/estudiante/tareas/{tarea}/entregar', [EstudianteController::class, 'procesarEntrega'])->name('estudiante.send.task');
+    // Ruta para actualizar la entrega
+    Route::put('/estudiante/tareas/{tarea}/entregar', [EstudianteController::class, 'updateEntrega'])->name('estudiante.update.task');
+
 
     // rutas de maestro
     Route::get('/maestro/dashboard', [MaestroController::class, 'index'])->name('maestro.dashboard.index');

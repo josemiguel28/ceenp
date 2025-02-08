@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'Cursos - ' . $tarea->nombre )
+@section('title',  $tarea->titulo )
 
 @section('content')
 
@@ -8,6 +8,11 @@
         <!-- Dropzone CSS -->
         <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
     @endpush
+
+    <a href="{{ route('estudiante.show', $tarea->materia_id ) }}"
+       class="inline-flex items-center px-4 py-2 mb-12 outline-black text-black font-semibold rounded-lg shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300">
+        ← Volver
+    </a>
 
     <h2 class="text-2xl font-semibold mb-4"> {{ $tarea->titulo }}</h2>
 
@@ -87,10 +92,12 @@
 
             </form>
 
-            <span class="text-gray-600 text-regular font-semibold">El archivo que enviaste</span>
-            <a href="{{ asset('storage/' . $tarea->archivo) }}" target="_blank" class="text-blue-500">
-                Ver archivo
-            </a>
+            @if($tarea->entregada)
+                <span class="text-gray-600 text-regular font-semibold">El archivo que enviaste</span>
+                <a href="{{ asset('storage/' . $tarea->archivo) }}" target="_blank" class="text-blue-500">
+                    Ver archivo
+                </a>
+            @endif
 
             @error('archivo_path')
             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
@@ -98,11 +105,16 @@
 
             <p class="mt-4 text-gray-600 font-semibold">Observación (opcional)</p>
 
-            <form action="{{ route('estudiante.send.task', $tarea) }}" method="POST">
+            <form
+                action="{{ $tarea->entregada ? route('estudiante.update.task', $tarea) : route('estudiante.send.task', $tarea) }}"
+                method="POST">
                 @csrf
 
+                {{ $tarea->entregada ? method_field('PUT') : '' }}
+
                 <!-- Campo oculto para la ruta del archivo -->
-                <input type="hidden" name="archivo_path" id="archivo_path">
+                <input type="hidden" name="archivo_path" id="archivo_path"
+                       value="{{ $tarea->archivo ? $tarea->archivo : '' }}">
                 <textarea name="observacion" id="observacion"
                           class="w-full h-24 bg-gray-100 p-2 rounded-md shadow-inner"
                           placeholder="Escribe aquí tus observaciones">{{ $tarea->comentario_alumno }}</textarea>
@@ -111,6 +123,10 @@
                     Enviar tarea
                 </x-primary-button>
             </form>
+        @endif
+
+        @if(session('error'))
+            <p class="text-red-500 mt-4">{{ session('error') }}</p>
         @endif
 
 
