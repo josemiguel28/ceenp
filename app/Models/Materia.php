@@ -28,4 +28,9 @@ class Materia extends Model
         return $this->hasMany(Tarea::class);
     }
 
+    public function materiales()
+    {
+        return $this->hasMany(Material::class, 'materia_id'); // Asegúrate de que la clave foránea es correcta
+    }
+
 }

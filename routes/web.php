@@ -5,6 +5,7 @@ use App\Http\Controllers\BibliotecaController;
 use App\Http\Controllers\BoletasController;
 use App\Http\Controllers\CreateEstudianteController;
 use App\Http\Controllers\Estudiante\EstudianteController;
+use App\Http\Controllers\Maestro\CreateMaterialController;
 use App\Http\Controllers\Maestro\MaestroController;
 use App\Http\Controllers\Estudiante\TareaController;
 use App\Http\Controllers\FileHandlerController;
@@ -72,8 +73,13 @@ Route::middleware('auth')->group(function () {
         ->name('maestro.submission.score');
 
 
-    // Subir material de apoyo
-    Route::post('/maestro/materias/{materia}/subir-material', [CreateMaestroController::class, 'subirMaterial'])->name('maestro.materias.subir-material');
+    // Ruta para mostrar el formulario de creación de recursos
+    Route::get('/maestro/materias/{materia}/crear-recurso', [CreateMaterialController::class, 'mostrarFormularioRecurso'])
+        ->name('maestro.materias.crear-recurso');
+
+    // Ruta para procesar la creación de recursos
+    Route::post('/maestro/materias/{materia}/crear-recurso', [CreateMaterialController::class, 'crearRecurso'])
+        ->name('maestro.materias.crear-recurso.store');
 
 
     //ruta de tareas

@@ -12,9 +12,9 @@ Dropzone.autoDiscover = false;
 
 const dropzone = new Dropzone("#dropzone", {
     dictDefaultMessage: "Arrastra o da click para subir el archivo",
-    acceptedFiles: "application/pdf",
-    maxFilesize: 10,
-    maxFiles: 1,
+    acceptedFiles: 'video/*,application/pdf',
+    maxFiles: 1 ,
+    maxFilesize: 1024,
     addRemoveLinks: true,
     dictRemoveFile: "Eliminar archivo",
     uploadMultiple: false,
@@ -32,9 +32,10 @@ const dropzone = new Dropzone("#dropzone", {
     }
 });
 
-dropzone.on('error', function (file) {
-    toastr["error"]("El archivo debe ser un PDF", "Archivo no válido")
+dropzone.on('error', function (file, message) {
+    toastr["error"](message)
 
+    console.log(message)
     toastr.options = {
         "closeButton": false,
         "debug": false,

@@ -7,11 +7,12 @@
     <div class="max-w-6xl mx-auto">
         <!-- Encabezado -->
         <div class="bg-blue-900 text-white p-6 rounded-lg flex flex-col justify-items-start h-36">
-            <!-- boton de volver -->
+            <!-- boton de volver
             <a href="{{ route('estudiante.dashboard.index' ) }}"
                class="inline-flex items-center px-4 py-2 mb-12 outline-black text-black font-semibold rounded-lg shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300">
                 ← Volver
             </a>
+             -->
             <h1 class="text-3xl font-bold">{{ $materia->nombre }}</h1>
 
         </div>

@@ -28,7 +28,7 @@
             </a>
 
             <x-secondary-button>
-                <a href="{{ route('maestro.create.task', $materia->id) }}">Crear recurso</a>
+                <a href="{{ route('maestro.materias.crear-recurso', $materia->id) }}">Crear recurso</a>
             </x-secondary-button>
         </div>
 
@@ -104,15 +104,15 @@
                 <!-- Recursos del curso -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h3 class="text-lg font-bold mb-4">Recursos de este curso</h3>
+
+
                     <div class="space-y-4">
-                        <div class="bg-gray-300 rounded-lg overflow-hidden">
-                            <img src="https://via.placeholder.com/300" alt="Video" class="w-full">
-                            <div class="p-2 text-center">Grabación de clase 20 ene. 2024</div>
-                        </div>
-                        <div class="bg-gray-300 rounded-lg overflow-hidden">
-                            <img src="https://via.placeholder.com/300" alt="Video" class="w-full">
-                            <div class="p-2 text-center">Grabación de clase 20 ene. 2024</div>
-                        </div>
+                        @foreach($materia->materiales as $material)
+                            <div class="bg-gray-300 rounded-lg overflow-hidden">
+                                <img src="https://via.placeholder.com/300" alt="Video" class="w-full">
+                                <div class="p-2 text-center">{{$material->titulo}}</div>
+                            </div>
+                        @endforeach
                         <button class="w-full bg-gray-800 text-white py-2 rounded mt-4">Ver todos</button>
                     </div>
                 </div>
