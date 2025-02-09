@@ -23,9 +23,10 @@ class MaestroController extends Controller
     {
         $materia = Materia::find($materia); // Buscar la materia por su id
         $tareas = $materia->tareas;
-        //$material = $materia->material;
+        $materiales = $materia->materiales()->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('maestro.show', compact('materia', 'tareas' /*'material'*/));
+
+        return view('maestro.show', compact('materia', 'tareas', 'materiales'));
     }
 
     public function asignarTarea(Materia $materia)

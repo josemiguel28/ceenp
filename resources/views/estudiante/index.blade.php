@@ -1,5 +1,5 @@
 @php use App\Models\Tarea; @endphp
-<!-- resources/views/student/dashboard.blade.php -->
+    <!-- resources/views/student/dashboard.blade.php -->
 @extends('layouts.user')
 
 @section('title', 'Dashboard Estudiante')
@@ -45,27 +45,38 @@
                 <div
                     class="bg-white shadow-md rounded-lg border border-transparent transition transform hover:-translate-y-2 hover:shadow-lg hover:border-blue-500 flex flex-col aos-init"
                     data-aos="fade-right">
-                    <a href="/search-book?busqueda-libro=derechos+humanos" class="flex-grow">
+                    <a href="{{ route('estudiante.show', $materia->id) }}" class="flex-grow">
                         <div>
                             <picture>
                                 <source srcset="{{ asset('img/courses/1_background.png') }}" type="image/webp">
                                 <source srcset="{{ asset('img/courses/1_background.png') }}" type="image/jpeg">
                                 <img loading="lazy" class="rounded-t-lg w-full h-40 object-fit"
-                                     src="{{ asset('img/courses/1_background.png') }}" alt="derechos humanos">
+                                     src="{{ asset('img/courses/1_background.png') }}" alt="img curso">
                             </picture>
                         </div>
                         <div class="p-4">
                             <h3 class="text-xl font-semibold">{{ $materia->nombre }}</h3>
                             <p class="text-gray-700">
 
-                                @php
-                                    $tareas = Tarea::where('materia_id', 1);
-                                    $cantidad = $tareas->count();
-                                @endphp
+                            @php
+                                // Verificar si la materia tiene tareas pendientes
+                                $tareaPendiente = $materia->tareas->some(function ($tarea) {
+                                    return !$tarea->entregas->contains('user_id', Auth::id());
+                                });
+                            @endphp
 
-                                <span>{{ $cantidad }}</span>
+                            @if($tareaPendiente)
+                                <p class="text-red-600 text-sm flex items-center">
+                                    <span class="w-2 h-2 bg-red-600 rounded-full inline-block mr-2"></span>
+                                    Tienes tareas pendientes
+                                </p>
+                            @else
+                                <p class="text-green-600 text-sm flex items-center">
+                                    <span class="w-2 h-2 bg-green-600 rounded-full inline-block mr-2"></span>
+                                    No tienes tareas pendientes
+                                </p>
+                            @endif
 
-                            </p>
                         </div>
                     </a>
 
@@ -77,6 +88,7 @@
                     </div>
                 </div>
             @endforeach
+
         </div>
     </div>
 

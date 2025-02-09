@@ -27,7 +27,7 @@
                         </div>
                         <div class="p-4">
                             <h3 class="text-xl font-semibold">{{ $materia->nombre }}</h3>
-                            <p class="text-gray-700">.</p>
+                            <p class="text-gray-700"></p>
                         </div>
                     </a>
                     <!-- Call to Action -->

@@ -13,18 +13,18 @@
             <div class="mb-4">
                 <x-input-label for="titulo" :value="__('Titulo de la tarea')"/>
                 <x-text-input
-                        type="text"
-                       name="titulo"
-                       id="titulo"
-                       class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                       required
-                        :value="$tarea->titulo"
+                    type="text"
+                    name="titulo"
+                    id="titulo"
+                    class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    required
+                    :value="$tarea->titulo"
                 />
             </div>
 
             <!-- Descripción -->
             <div class="mb-4">
-                <x-input-label for="titulo" :value="__('Agrega una descricpcion de la tarea')"/>
+                <x-input-label for="titulo" :value="__('Agrega una descripcion de la tarea')"/>
                 <textarea
                     name="descripcion"
                     id="descripcion"
@@ -46,7 +46,7 @@
                 />
             </div>
 
-            <!-- Archivo -->
+            <!-- Archivo
             <div class="mb-4">
 
                 <x-input-label for="archivo" :value="__('Archivo (opcional)')"/>
@@ -62,11 +62,15 @@
 
             @if ($tarea->archivo)
                 <p class="my-8">Archivo actual   <a class="underline" href="{{ Storage::url($tarea->archivo) }}" target="_blank">Descargar</a></p>
+
             @endif
+
+            -->
 
             <!-- Botones -->
             <div class="flex justify-between">
-                <a href="{{ route('maestro.show', $tarea) }}" class="bg-gray-500 text-white px-5 py-2 rounded-lg hover:bg-gray-600 transition-all">Cancelar</a>
+                <a href="{{ route('maestro.show', $tarea->materia_id) }}"
+                   class="bg-gray-500 text-white px-5 py-2 rounded-lg hover:bg-gray-600 transition-all">Cancelar</a>
 
                 <x-primary-button>
                     Actualizar Tarea

@@ -15,15 +15,17 @@ class EstudianteController extends Controller
 {
     public function index()
     {
-        $materias = auth()->user()->materiasStudents;
+        $materias = auth()->user()->materiasStudents; // Obtiene las materias del estudiante
 
-        return view('estudiante.index', compact('materias'));
+        return view('estudiante.index', compact('materias', ));
     }
+
 
     public function show($materia)
     {
         $materia = Materia::findOrFail($materia);
         $tareas = $materia->tareas;
+        $materiales = $materia->materiales()->orderBy('created_at', 'desc')->paginate(10);
 
         // Contar tareas entregadas
         $tareasEntregadas = 0;
@@ -41,7 +43,7 @@ class EstudianteController extends Controller
         $totalTareas = $tareas->count();
         $progreso = $totalTareas > 0 ? round(($tareasEntregadas / $totalTareas) * 100) : 0;
 
-        return view('estudiante.show', compact('materia', 'tareas', 'progreso'));
+        return view('estudiante.show', compact('materia', 'tareas', 'progreso', 'materiales'));
     }
 
 
