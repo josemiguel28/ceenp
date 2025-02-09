@@ -109,12 +109,16 @@
                     <div class="space-y-4">
                         @foreach($materia->materiales as $material)
                             <div class="bg-gray-300 rounded-lg overflow-hidden">
-                                <img src="https://via.placeholder.com/300" alt="Video" class="w-full">
-                                <div class="p-2 text-center">{{$material->titulo}}</div>
+                                <video class="w-full" controls>
+                                    <source src="{{ Storage::url($material->archivo) }}" type="video/mp4">
+                                    Tu navegador no soporta la reproducción de video.
+                                </video>
+                                <div class="p-2 text-center font-semibold">{{ $material->titulo }}</div>
                             </div>
                         @endforeach
                         <button class="w-full bg-gray-800 text-white py-2 rounded mt-4">Ver todos</button>
                     </div>
+
                 </div>
             </div>
         </div>
