@@ -16,27 +16,19 @@ use App\Http\Controllers\ProfileController;
 use App\Models\Estudiante;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])->group(function () {
-    // Ruta del dashboard
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard');
+// 🔹 RUTAS PARA ADMINISTRADORES
+Route::middleware('role:1')->group(function () {
 
-    // Rutas de los estudiantes CRUD
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::resource('/admin/estudiantes', CreateEstudianteController::class)->names('estudiantes');
-    // Rutas de los maestros CRUD
     Route::resource('/admin/maestros', CreateMaestroController::class)->names('maestros');
-    // Rutas de biblioteca
     Route::resource('/admin/biblioteca', BibliotecaController::class)->names('biblioteca');
-    // Rutas de boletas
     Route::resource('/admin/boletas', BoletasController::class)->names('boletas')->except(['edit', 'update', 'show']);
-    // ruta de materias
     Route::resource('/admin/materias', MateriaController::class)->names('materias');
 });
 
-// Rutas de los recursos
-Route::post('/uploads', [FileHandlerController::class, 'uploadResource'])->name('upload.resources');
-Route::middleware('auth')->group(function () {
-
-    // 🔹 RUTAS PARA ESTUDIANTES
+// 🔹 RUTAS PARA ESTUDIANTES
+Route::middleware(['auth', 'role:2'])->group(function () {
     Route::prefix('estudiante')->name('estudiante.')->group(function () {
         Route::get('/dashboard', [EstudianteController::class, 'index'])->name('dashboard.index');
         Route::get('/materias/{materia}', [EstudianteController::class, 'show'])->name('show');
@@ -44,19 +36,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/tareas/{tarea}/entregar', [EstudianteController::class, 'procesarEntrega'])->name('send.task');
         Route::put('/tareas/{tarea}/entregar', [EstudianteController::class, 'updateEntrega'])->name('update.task');
     });
+});
 
-    // 🔹 RUTAS PARA MAESTROS
+// 🔹 RUTAS PARA MAESTROS
+Route::middleware(['auth', 'role:3'])->group(function () {
     Route::prefix('maestro')->name('maestro.')->group(function () {
         Route::get('/dashboard', [MaestroController::class, 'index'])->name('dashboard.index');
         Route::get('/materias/{materia}', [MaestroController::class, 'show'])->name('show');
 
-        // Tareas
-        Route::prefix('/tareas')->name('tareas.')->group(function () {
-            Route::get('/{tarea}/editar', [MaestroController::class, 'editarTarea'])->name('edit');
-            Route::put('/{tarea}', [MaestroController::class, 'updateTask'])->name('update');
-            Route::delete('/{tarea}', [MaestroController::class, 'destroyTask'])->name('destroy');
-            Route::get('/{tarea}/entregas', [SubmissionController::class, 'verEntregas'])->name('view.submissions');
-        });
+        Route::get('/{tarea}/editar', [MaestroController::class, 'editarTarea'])->name('edit.task');
+        Route::put('/{tarea}', [MaestroController::class, 'updateTask'])->name('update.task');
+        Route::delete('/{tarea}', [MaestroController::class, 'destroyTask'])->name('destroy.task');
+        Route::get('/{tarea}/entregas', [SubmissionController::class, 'verEntregas'])->name('view.submissions');
 
         // Asignación de tareas a materias
         Route::prefix('/materias/{materia}')->group(function () {
@@ -71,14 +62,17 @@ Route::middleware('auth')->group(function () {
         // Calificación de entregas
         Route::post('/entregas/{entrega}/calificar', [SubmissionController::class, 'calificarEntrega'])->name('submission.score');
     });
+});
 
-    // 🔹 RUTAS DE PERFIL
+// 🔹 RUTAS DE PERFIL
+Route::middleware('auth')->group(function () {
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
-
+    // Ruta para subir recursos (PDF, imágenes, etc.)
+    Route::post('/uploads', [FileHandlerController::class, 'uploadResource'])->name('upload.resources');
 });
 
 

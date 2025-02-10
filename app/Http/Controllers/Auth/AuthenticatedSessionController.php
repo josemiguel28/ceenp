@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Enums\UserStatus;
+use App\Enums\UserRoles;
+
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,25 +35,26 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        $ADMIN_ROLE_ID = 1;
-        $ESTUDIANTE_ROLE_ID = 2;
-        $MAESTRO_ROLE_ID = 3;
+        $user = $request->user();
 
-        // Redirigir según el rol del usuario
-        switch ($request->user()->role_id) {
-            case $ADMIN_ROLE_ID:
-                return redirect()->intended(route('dashboard', absolute: false));
-            case $ESTUDIANTE_ROLE_ID:
-                return redirect()->intended(route('estudiante.dashboard.index', absolute: false));
-            case $MAESTRO_ROLE_ID:
-                return redirect()->intended(route('maestro.dashboard.index', absolute: false));
-            default:
-                return redirect()->intended(route('/', absolute: false));
+        if ($user->status == UserStatus::INACTIVE) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login')->with('error', 'Tu cuenta ha sido desactivada. Contacta al administrador.');
         }
+
+        return match ($user->role_id) {
+            UserRoles::ADMIN => redirect()->intended(route('dashboard')),
+            UserRoles::ESTUDIANTE => redirect()->intended(route('estudiante.dashboard.index')),
+            UserRoles::MAESTRO => redirect()->intended(route('maestro.dashboard.index')),
+            default => redirect()->route('login'),
+        };
     }
+
 
     /**
      * Destroy an authenticated session.
@@ -62,6 +67,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }
