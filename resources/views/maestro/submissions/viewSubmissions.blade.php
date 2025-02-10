@@ -4,6 +4,12 @@
 
 @section('content')
     <div class="max-w-5xl mx-auto p-6">
+
+        <a href="{{ redirect()->back()->getTargetUrl() }}"
+           class="inline-flex items-center px-4 py-2 mb-6 lg:mb-12 outline-black text-black font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300">
+            ← Volver
+        </a>
+
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Entregas de la Tarea: {{ $tarea->titulo }}</h1>
 
         <div class="space-y-6">

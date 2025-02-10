@@ -8,14 +8,14 @@
     @endpush
     <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-bold text-gray-800 mb-4">
-            Crear Recurso para la Materia: {{ $materia->nombre }}
+            Crear Recurso
         </h1>
 
         <div>
             <form action="{{ route('upload.resources') }}"
                   method="POST"
                   enctype="multipart/form-data"
-                  class="dropzone"
+                  class="dropzone "
                   id="dropzone"
             >
                 @csrf
@@ -42,27 +42,43 @@
             <input type="hidden" name="archivo_path" id="archivo_path">
             <!-- Título -->
             <div>
-                <label for="titulo" class="block text-sm font-medium text-gray-700">Título</label>
-                <input type="text" name="titulo" id="titulo" required
-                       class="mt-1 block w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <x-input-label for="titulo" :value="__('Título')" />
+
+                <x-text-input
+                    type="text"
+                    name="titulo"
+                    id="titulo"
+                    class="mt-1 block w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    :value="old('titulo')"
+                    required
+                />
+
+                @error('titulo')
+                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
+
             </div>
 
             <!-- Descripción -->
             <div>
-                <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción (opcional)</label>
-                <textarea name="descripcion" id="descripcion" rows="3"
-                          class="mt-1 block w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <x-input-label for="descripcion" :value="__('Descripcion (opcional)')" />
+                <textarea name="descripcion"
+                          id="descripcion"
+                          rows="3"
+                          class="mt-1 block w-full px-4 py-2 border rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"></textarea>
             </div>
 
             <!-- Botones -->
             <div class="flex space-x-4">
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition">
-                    Crear Recurso
-                </button>
                 <a href="{{ route('maestro.show', $materia) }}"
-                   class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition">
+                   class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 align-items-center rounded-lg transition">
                     Cancelar
                 </a>
+
+                <x-primary-button type="submit" class="">
+                    Crear Recurso
+                </x-primary-button>
+
             </div>
         </form>
     </div>
