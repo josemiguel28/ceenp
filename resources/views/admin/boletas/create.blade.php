@@ -21,7 +21,7 @@
                       id="dropzone"
                 >
                     @csrf
-                    <input type="hidden" id="archivo_path" name="context" value="boletas.create">
+                    <input type="hidden" name="context" value="boletas.create">
                     <!-- Envía el contexto para guardar el PDF -->
                     <div class="fallback">
                         <input name="file" type="file"/>

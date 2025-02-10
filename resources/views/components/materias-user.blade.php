@@ -13,7 +13,7 @@
     <h2 class="text-2xl font-semibold">{{ $saludo }}, {{ auth()->user()->name }}</h2>
 </div>
 
-<h1 class="text-xl mb-8">Tus cursos</h1>
+<h1 class="text-xl mb-4">Tus cursos</h1>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 

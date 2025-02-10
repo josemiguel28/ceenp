@@ -17,7 +17,10 @@ class EstudianteController extends Controller
     {
         $materias = auth()->user()->materiasStudents; // Obtiene las materias del estudiante
 
-        return view('estudiante.index', compact('materias', ));
+        //obtiene de la tabla boletas
+        $boletas = auth()->user()->boletas;
+
+        return view('estudiante.index', compact('materias', 'boletas' ));
     }
 
 

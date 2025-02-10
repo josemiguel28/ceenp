@@ -21,9 +21,27 @@
 
         </div>
 
-        <x-materias-user :materias="$materias" />
-    </div>
+        <x-materias-user :materias="$materias"/>
 
+
+        <h2 class="text-xl mb-4 text-gray-800 mt-8">Tus boletas</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+
+            <!-- Boletas -->
+            @foreach($boletas as $boleta)
+                <a href=" {{ asset('storage/' . $boleta->archivo) }} " target="_blank">
+                    <div
+                        class="bg-white shadow-md rounded-lg border border-gray-200 overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl hover:border-blue-500">
+                        <div class="p-4">
+                            <h3 class="text-sm">Publicada {{ $boleta->created_at->diffForHumans() }}</h3>
+                            <p class="float-right text-md px-2 py-4 font-semibold">Ver boleta</p>
+                        </div>
+                    </div>
+                </a>
+            @endforeach
+
+        </div>
+    </div>
 @endsection
 
 

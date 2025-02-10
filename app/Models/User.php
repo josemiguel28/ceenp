@@ -74,4 +74,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Tarea::class, 'tarea_user');
     }
 
+    public function boletas()
+    {
+        return $this->hasMany(Boleta::class);
+    }
+
 }
