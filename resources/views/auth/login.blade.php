@@ -1,7 +1,4 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')"/>
-
     <div class="px-4 md:px-4 text-center md:text-left">
         <h1 class="text-2xl md:text-4xl font-bold text-primary leading-tight">
             El espacio para tu aprendizaje en <br class="hidden md:block" />
@@ -19,6 +16,9 @@
             <span class="block sm:inline">{{ session('error') }}</span>
         </div>
     @endif
+
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')"/>
 
     <form method="POST" action="{{ route('login') }}" class="mt-8">
         @csrf
