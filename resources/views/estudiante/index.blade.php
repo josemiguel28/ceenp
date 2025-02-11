@@ -77,10 +77,10 @@
                         <a href="{{ $recurso->tipo === 'pdf' ? asset('storage/' . $recurso->archivo) : $recurso->enlace }}"
                            target="_blank"
                            class="w-full text-center">
-                            <x-primary-button
-                                class="w-full bg-white text-orange-500 text-xs font-bold leading-none items-center hover:bg-gray-300 hover:text-orange-500">
+                            <span
+                                class="w-full bg-white text-orange-500 text-md font-bold leading-none items-center px-6 py-3 rounded-lg hover:bg-gray-300 hover:text-orange-500">
                                 Ver recurso
-                            </x-primary-button>
+                            </span>
                         </a>
                     </div>
                 </div>
