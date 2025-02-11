@@ -25,6 +25,12 @@ Route::middleware('role:1')->group(function () {
     Route::resource('/admin/biblioteca', BibliotecaController::class)->names('biblioteca');
     Route::resource('/admin/boletas', BoletasController::class)->names('boletas')->except(['edit', 'update', 'show']);
     Route::resource('/admin/materias', MateriaController::class)->names('materias');
+
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
 });
 
 // 🔹 RUTAS PARA ESTUDIANTES
@@ -66,11 +72,6 @@ Route::middleware(['auth', 'role:3'])->group(function () {
 
 // 🔹 RUTAS DE PERFIL
 Route::middleware('auth')->group(function () {
-    Route::prefix('profile')->name('profile.')->group(function () {
-        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
-        Route::patch('/', [ProfileController::class, 'update'])->name('update');
-        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
-    });
     // Ruta para subir recursos (PDF, imágenes, etc.)
     Route::post('/uploads', [FileHandlerController::class, 'uploadResource'])->name('upload.resources');
 });

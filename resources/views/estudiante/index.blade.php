@@ -8,7 +8,7 @@
 
     <div class="container mx-auto px-4 py-8">
 
-        <div class="bg-blue-900 text-white p-3 rounded-lg mb-8 relative h-32 lg:p-8">
+        <div class="bg-blue-900 text-white p-5 rounded-lg mb-8 relative h-32 lg:p-8">
             <h1 class="text-xl sm:text-2xl lg:text-3xl font-semibold ">¡Bienvenido a tu plataforma de aprendizaje!</h1>
             <p class="text-sm sm:text-xl lg:text-xl ">Continúa avanzando hacia tus metas.</p>
 
