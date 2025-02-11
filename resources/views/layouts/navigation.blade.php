@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
 
-    @if(request()->routeIs('dashboard') || request()->routeIs('estudiantes.index'))
+    @if(request()->routeIs('dashboard') || request()->routeIs('estudiantes.index') || request()->routeIs('maestros.index'))
         <h3 class="p-2 bg-yellow-200 text-center text-yellow-800 font-semibold rounded-md shadow-md lg:hidden">
             Para una mejor experiencia, visita el sitio web desde tu laptop 💻
         </h3>
@@ -48,10 +48,13 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Perfil') }}
-                        </x-dropdown-link>
 
+                        @if(request()->routeIs('dashboard'))
+
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Perfil') }}
+                            </x-dropdown-link>
+                        @endif
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -84,34 +87,37 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
 
+        @if(request()->routeIs('dashboard'))
+
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            </div>
+        @endif
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
             </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Perfil') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                                           onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Cerrar sesión') }}
+            @if(request()->routeIs('dashboard'))
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Perfil') }}
                     </x-responsive-nav-link>
-                </form>
-            </div>
+                    @endif
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                                               onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Cerrar sesión') }}
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
         </div>
     </div>
 </nav>

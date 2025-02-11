@@ -1,6 +1,6 @@
-<aside {{ $attributes->merge(['class' => 'w-64 bg-white h-screen shadow-md flex flex-col justify-between']) }}>
+<aside {{ $attributes->merge(['class' => 'w-64 bg-white h-screen lg:h-full shadow-md flex flex-col justify-between']) }}>
     <div class="p-6">
-        <nav class="space-y-2">
+        <nav class="space-y-2 h-full">
             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 <span class="mr-3">
                     <!-- Home Icon -->

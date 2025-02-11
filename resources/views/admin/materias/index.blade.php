@@ -61,6 +61,16 @@
                     </tr>
                     </thead>
                     <tbody>
+
+                    @if($materias->isEmpty())
+                        <div class="bg-white rounded-lg overflow-hidden">
+                            <div class="p-4 text-center">
+                                <h3 class="text-lg font-semibold text-gray-900">No hay materias registradas.</h3>
+                                <p class="text-sm text-gray-600">Agrega nuevas materias.</p>
+                            </div>
+                        </div>
+                    @endif
+
                     @foreach($materias as $materia)
                         <tr>
                             <td class="p-4 border-b border-blue-gray-50">

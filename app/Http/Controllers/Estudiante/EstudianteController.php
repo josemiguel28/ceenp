@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Estudiante;
 
 use App\Http\Controllers\Controller;
+use App\Models\Biblioteca;
 use App\Models\Entrega;
 use App\Models\Materia;
 use App\Models\Tarea;
@@ -20,7 +21,15 @@ class EstudianteController extends Controller
         //obtiene de la tabla boletas
         $boletas = auth()->user()->boletas;
 
-        return view('estudiante.index', compact('materias', 'boletas' ));
+        //recursos generales
+        $recursos = Biblioteca::orderBy('created_at', 'desc')->paginate(10);
+
+        return view('estudiante.index',
+            compact(
+                'materias',
+                'boletas',
+                            'recursos'
+            ));
     }
 
 

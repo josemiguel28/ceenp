@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'CEENP') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -34,13 +34,13 @@
 </header>
 
 
-<div class="mt-8 md:flex md:justify-center md:gap-10 md:items-center">
+<div class="mt-8 lg:mt-0 md:flex md:justify-center md:gap-10 md:items-center">
 
     <div class="md:w-5/12">
         {{ $slot }}
     </div>
 
-    <div class="md:w-6/12 hidden md:block">
+    <div class="md:w-6/12 p-8 hidden md:block">
         <picture>
             <source srcset="{{ asset('/img/login_img.webp') }}" type="image/webp">
             <img

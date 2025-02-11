@@ -31,7 +31,6 @@
             <!-- Actividades Recientes -->
             <div class="bg-white p-6 rounded-lg shadow-md md:col-span-2">
 
-
                 <div class="bg-white shadow-md rounded-lg mb-12 p-4 md:hidden">
                     <h2 class="text-xl font-semibold text-gray-700 mb-3">Progreso de tareas</h2>
 
@@ -49,6 +48,15 @@
 
                 <h2 class="text-xl font-semibold mb-4 text-gray-700">Actividades Recientes</h2>
                 <ul class="space-y-6">
+                    @if($tareas->isEmpty())
+                        <div
+                            class="bg-white rounded-lg overflow-hidden">
+                            <div class="p-4">
+                                <h3 class="text-sm">No tienes tareas publicadas</h3>
+                            </div>
+                        </div>
+                    @endif
+
                     @foreach($tareas as $tarea)
                         <li class="flex flex-wrap items-center justify-between bg-gray-100 p-4 rounded-lg gap-4 md:flex-nowrap">
                             <!-- Icono de estado -->
@@ -109,7 +117,7 @@
                     </p>
                 </div>
                 <!-- Recursos del curso -->
-                <x-recursos-sidebar-user :materiales="$materiales" />
+                <x-recursos-sidebar-user :materiales="$materiales"/>
             </div>
         </div>
     </div>

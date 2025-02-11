@@ -44,10 +44,20 @@
 
         <!-- Contenido -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+
             <!-- Actividades Recientes -->
             <div class="bg-white p-6 rounded-lg shadow-md md:col-span-2">
+
                 <h2 class="text-xl font-bold mb-4">Actividades Recientes</h2>
                 <ul class="space-y-6">
+
+                    @if($tareas->isEmpty())
+                        <div class="bg-white p-6 md:col-span-2">
+                            <h2 class="text-md mb-4">No hay tareas creadas</h2>
+                            <p class="text-gray-600">Crea una tarea para que tus alumnos puedan entregarla.</p>
+                        </div>
+                    @endif
+
                     @foreach($tareas as $tarea)
                         <li class="flex flex-wrap items-center justify-between bg-gray-100 p-4 rounded-lg gap-4 md:flex-nowrap">
 

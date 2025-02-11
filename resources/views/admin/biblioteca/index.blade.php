@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <div class="relative mt-8 flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
+    <div class="relative mt-8 flex flex-col w-full h-auto text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
         <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border">
             <div class="flex flex-col justify-between gap-8 mb-4 md:flex-row md:items-center">
                 <div class="mt-4">
@@ -59,6 +59,16 @@
                 </tr>
                 </thead>
                 <tbody>
+
+                @if($recursos->isEmpty())
+                    <div class="bg-white rounded-lg overflow-hidden">
+                        <div class="p-4 text-center">
+                            <h3 class="text-lg font-semibold text-gray-900">No hay recursos</h3>
+                            <p class="text-sm text-gray-600">Agrega nuevos recursos para los estudiantes.</p>
+                        </div>
+                    </div>
+                @endif
+
                 @foreach($recursos as $recurso)
                     <tr>
                         <td class="p-4 border-b border-blue-gray-50">

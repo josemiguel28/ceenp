@@ -1,6 +1,6 @@
 <div x-data="{ open: false }" class="flex flex-col md:flex-row">
     <!-- Sidebar fijo (solo para pantallas grandes) -->
-    <aside class="hidden md:block w-64 bg-white h-screen shadow-md flex flex-col justify-between">
+    <aside class="hidden md:block w-64 bg-white h-screen lg:h-full shadow-md flex flex-col justify-between">
         <x-admin-sidebar />
     </aside>
 

@@ -2,6 +2,15 @@
     <h3 class="text-xl font-bold mb-4 text-gray-700">Recursos de este curso</h3>
 
     <div class="space-y-4">
+
+        @if($materiales->isEmpty())
+            <div class="bg-white rounded-lg overflow-hidden">
+                <div class="p-4">
+                    <h3 class="text-sm text-gray-600">No hay materiales disponibles para esta clase.</h3>
+                </div>
+            </div>
+        @endif
+
         @foreach($materiales as $material)
             @php
                 $fileUrl = Storage::url($material->archivo);
