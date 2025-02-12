@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+@ini_set( 'upload_max_size' , '1024M' );
+@ini_set( 'post_max_size', '1024M');
+@ini_set( 'max_execution_time', '300' );
+
 use Illuminate\Http\Request;
 
 class FileHandlerController extends Controller
 {
+
     public static function uploadResource(Request $request)
     {
 
@@ -22,9 +27,6 @@ class FileHandlerController extends Controller
         };
 
         try {
-            ini_set('upload_max_filesize', '1024M');
-            ini_set('post_max_size', '1024M');
-            ini_set('memory_limit', '256M'); // Opcional, aumenta el límite de memoria si es necesario
 
             $path = $request->file('file')->store($folder, 'public');
 
