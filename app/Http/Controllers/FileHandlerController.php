@@ -8,6 +8,13 @@ class FileHandlerController extends Controller
 
     public function uploadResource(Request $request) {
         try {
+            $request->validate([
+                'file' => 'required|file',
+                'dzchunkindex' => 'required|integer',
+                'dztotalchunkcount' => 'required|integer',
+                'dzuuid' => 'required|string',
+            ]);
+
             $context = $request->input('context', 'otros');
             $folder = match ($context) {
                 'biblioteca.create' => 'recursos',
@@ -18,32 +25,63 @@ class FileHandlerController extends Controller
                 default => 'otros',
             };
 
-            // Datos de Dropzone
             $file = $request->file('file');
             $chunkIndex = $request->input('dzchunkindex');
             $totalChunks = $request->input('dztotalchunkcount');
             $fileName = $request->input('dzuuid') . "." . $file->getClientOriginalExtension();
-            $chunkPath = storage_path("app/{$folder}/{$fileName}.part{$chunkIndex}");
 
-            // Mover fragmento al almacenamiento
-            $file->move(storage_path("app/{$folder}/"), "{$fileName}.part{$chunkIndex}");
+            // Ruta base dentro
+            $basePath = storage_path("app/public/{$folder}");
+
+            if (!file_exists($basePath)) {
+                mkdir($basePath, 0777, true);
+            }
+
+            // Ruta del fragmento
+            $chunkPath = "{$basePath}/{$fileName}.part{$chunkIndex}";
+
+            // Mover el fragmento al almacenamiento
+            $file->move($basePath, "{$fileName}.part{$chunkIndex}");
+
+            $finalFileName = null;
 
             // Si es el último fragmento, unirlos
             if ($chunkIndex == $totalChunks - 1) {
-                $finalFilePath = storage_path("app/{$folder}/{$fileName}");
-                $fp = fopen($finalFilePath, 'w');
+                $finalFileName = uniqid() . "." . $file->getClientOriginalExtension();
+                $finalFilePath = "{$basePath}/{$finalFileName}";
 
-                for ($i = 0; $i < $totalChunks; $i++) {
-                    $chunk = fopen(storage_path("app/{$folder}/{$fileName}.part{$i}"), 'r');
-                    stream_copy_to_stream($chunk, $fp);
-                    fclose($chunk);
-                    unlink(storage_path("app/{$folder}/{$fileName}.part{$i}")); // Borra fragmento
+                try {
+                    $fp = fopen($finalFilePath, 'w');
+
+                    for ($i = 0; $i < $totalChunks; $i++) {
+                        $chunkPath = "{$basePath}/{$fileName}.part{$i}";
+                        if (!file_exists($chunkPath)) {
+                            throw new \Exception("Fragmento {$i} no encontrado.");
+                        }
+
+                        $chunk = fopen($chunkPath, 'r');
+                        stream_copy_to_stream($chunk, $fp);
+                        fclose($chunk);
+                        unlink($chunkPath); // Borra el fragmento
+                    }
+
+                    fclose($fp);
+                } catch (\Exception $e) {
+                    // Limpiar archivos temporales en caso de error
+                    for ($i = 0; $i < $totalChunks; $i++) {
+                        $chunkPath = "{$basePath}/{$fileName}.part{$i}";
+                        if (file_exists($chunkPath)) {
+                            unlink($chunkPath);
+                        }
+                    }
+                    throw $e;
                 }
-
-                fclose($fp);
             }
 
-            return response()->json(['path' => "storage/{$folder}/{$fileName}"]);
+            if ($finalFileName) {
+                // Ruta pública accesible desde la web
+                return response()->json(['path' => "{$folder}/{$finalFileName}"]);
+            }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }

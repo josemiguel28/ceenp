@@ -48,4 +48,24 @@ class CreateMaterialController extends Controller
         return redirect()->route('maestro.show', $materia)
             ->with('success', 'Recurso creado correctamente.');
     }
+
+    public function eliminarRecurso(Material $material)
+    {
+        $material = Material::findOrFail($material->id);
+
+        // Eliminar el archivo del almacenamiento
+        if ($material->archivo) {
+            $path = storage_path("app/public/{$material->archivo}");
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+
+        // Eliminar el recurso
+        $material->delete();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('maestro.show', 1)
+            ->with('success', 'Recurso eliminado correctamente.');
+    }
 }

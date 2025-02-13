@@ -12,7 +12,7 @@ Dropzone.autoDiscover = false;
 
 const dropzone = new Dropzone("#dropzone", {
     dictDefaultMessage: "Arrastra o da click para subir el archivo",
-    acceptedFiles: 'video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    acceptedFiles: 'video/*,application/pdf,image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation',
     maxFiles: 1,
     maxFilesize: 1024, // 1GB
     addRemoveLinks: true,
@@ -30,7 +30,6 @@ const dropzone = new Dropzone("#dropzone", {
     init: function () {
         this.on("success", function (file, response) {
             document.getElementById('archivo_path').value = response.path;
-            console.log(response.path);
         });
     }
 });
@@ -38,7 +37,6 @@ const dropzone = new Dropzone("#dropzone", {
 dropzone.on('error', function (file, message) {
     toastr["error"](message)
 
-    console.log(message)
     toastr.options = {
         "closeButton": false,
         "debug": false,

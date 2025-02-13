@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
 <div class="bg-white p-6 rounded-lg shadow-md">
     <h3 class="text-xl font-bold mb-4 text-gray-700">Recursos de este curso</h3>
 
@@ -17,7 +18,8 @@
                 $fileExtension = pathinfo($fileUrl, PATHINFO_EXTENSION);
             @endphp
 
-            <div class="bg-gray-100 rounded-lg p-4 flex items-center justify-between md:flex-col md:items-start md:gap-4">
+            <div
+                class="bg-gray-100 rounded-lg p-4 flex items-center justify-between md:flex-col md:items-start md:gap-4">
                 <div class="flex items-center space-x-4">
                     @if(in_array($fileExtension, ['mp4', 'mov', 'avi', 'webm']))
                         <!-- Ícono de video -->
@@ -63,8 +65,24 @@
 
                 <a href="{{ $fileUrl }}" target="_blank"
                    class="bg-secondary-default text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition text-center md:w-full ">
-                    Descargar
+                    Ver material
                 </a>
+
+                @if(auth()->user()->role_id == 3)
+
+                    <form action="{{ route('maestro.materias.recurso.destroy', $material) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit"
+                                class=" text-red-500 px-4 py-2 rounded-lg hover:bg-red-200 transition text-center md:w-full ">
+
+                            Eliminar material
+                        </button>
+                    </form>
+
+                @endif
+
             </div>
         @endforeach
     </div>

@@ -65,6 +65,8 @@ Route::middleware(['auth', 'role:3'])->group(function () {
             Route::post('/crear-recurso', [CreateMaterialController::class, 'crearRecurso'])->name('materias.crear-recurso.store');
         });
 
+        Route::delete('/recurso/{material}', [CreateMaterialController::class, 'eliminarRecurso'])->name('materias.recurso.destroy');
+
         // Calificación de entregas
         Route::post('/entregas/{entrega}/calificar', [SubmissionController::class, 'calificarEntrega'])->name('submission.score');
     });
