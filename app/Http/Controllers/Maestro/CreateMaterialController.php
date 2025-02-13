@@ -65,7 +65,7 @@ class CreateMaterialController extends Controller
         $material->delete();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('maestro.show', 1)
+        return redirect()->route('maestro.show', $material->materia)
             ->with('success', 'Recurso eliminado correctamente.');
     }
 }
