@@ -31,7 +31,7 @@ class CreateMaterialController extends Controller
         $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'archivo_path' => 'max:10240', // 10MB máximo
+            'archivo_path' => 'required',
         ]);
 
         // Crear el recurso
@@ -44,7 +44,6 @@ class CreateMaterialController extends Controller
 
         $material->save();
 
-        // Redirigir con un mensaje de éxito
         return redirect()->route('maestro.show', $materia)
             ->with('success', 'Recurso creado correctamente.');
     }
@@ -61,7 +60,6 @@ class CreateMaterialController extends Controller
             }
         }
 
-        // Eliminar el recurso
         $material->delete();
 
         return redirect()->route('maestro.show', $material->materia)

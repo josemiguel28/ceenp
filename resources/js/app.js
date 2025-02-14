@@ -11,51 +11,46 @@ Alpine.start();
 Dropzone.autoDiscover = false;
 
 const dropzone = new Dropzone("#dropzone", {
-    dictDefaultMessage: "Arrastra o da click para subir el archivo",
-    acceptedFiles: 'video/*,application/pdf,image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation',
-    maxFiles: 1,
-    maxFilesize: 1024, // 1GB
+    dictDefaultMessage: "Arrastra o selecciona tu archivo",
+    maxFiles: 50,
+    maxFilesize: 30720, // 30GB
+    chunking: true,
+    chunkSize: 10000000, // 10MB
+    acceptedFiles: "image/*,video/*,.mp4,.avi,.flv,.mov, .pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx",
+    //pemite remover archivos
     addRemoveLinks: true,
-    dictRemoveFile: "Eliminar archivo",
-    uploadMultiple: false,
-    chunking: true, // Habilita carga en fragmentos
-    forceChunking: true, // Obliga a dividir el archivo
-    chunkSize: 2 * 1024 * 1024, // 2MB por fragmento
-    retryChunks: true, // Reintentar fragmentos fallidos
-    retryChunksLimit: 3,
+    dictRemoveFileConfirmation: "¿Estás seguro de que quieres eliminar este archivo?",
 
     headers: {
         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
     },
-    init: function () {
-        this.on("success", function (file, response) {
-            document.getElementById('archivo_path').value = response.path;
-        });
-    }
+    success: function (file, response) {
+       const path =  document.getElementById('archivo_path').value = response.path
+       console.log(path)
+    },
+    error: function (file, message) {
+        toastr["error"](message)
+
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "500",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        this.removeFile(file)
+    },
 });
-
-dropzone.on('error', function (file, message) {
-    toastr["error"](message)
-
-    toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "500",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
-    this.removeFile(file)
-})
 
 
 

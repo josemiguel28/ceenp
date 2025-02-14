@@ -1,90 +1,57 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class FileHandlerController extends Controller
 {
 
-    public function uploadResource(Request $request) {
-        try {
-            $request->validate([
-                'file' => 'required|file',
-                'dzchunkindex' => 'required|integer',
-                'dztotalchunkcount' => 'required|integer',
-                'dzuuid' => 'required|string',
-            ]);
+    public function uploadResource(Request $request)
+    {
 
-            $context = $request->input('context', 'otros');
-            $folder = match ($context) {
-                'biblioteca.create' => 'recursos',
-                'estudiante.create.task' => 'entregas',
-                'maestro.create.task' => 'tareas',
-                'boletas.create' => 'boletas',
-                'maestro.create.material' => 'materiales',
-                default => 'otros',
-            };
+        $context = $request->input('context', 'otros');
+        $folder_context = match ($context) {
+            'biblioteca.create' => 'recursos',
+            'estudiante.create.task' => 'entregas',
+            'maestro.create.task' => 'tareas',
+            'boletas.create' => 'boletas',
+            'maestro.create.material' => 'materiales',
+            default => 'otros',
+        };
 
-            $file = $request->file('file');
-            $chunkIndex = $request->input('dzchunkindex');
-            $totalChunks = $request->input('dztotalchunkcount');
-            $fileName = $request->input('dzuuid') . "." . $file->getClientOriginalExtension();
+        // Crea el receptor de archivos
+        $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
 
-            // Ruta base dentro
-            $basePath = storage_path("app/public/{$folder}");
-
-            if (!file_exists($basePath)) {
-                mkdir($basePath, 0777, true);
-            }
-
-            // Ruta del fragmento
-            $chunkPath = "{$basePath}/{$fileName}.part{$chunkIndex}";
-
-            // Mover el fragmento al almacenamiento
-            $file->move($basePath, "{$fileName}.part{$chunkIndex}");
-
-            $finalFileName = null;
-
-            // Si es el último fragmento, unirlos
-            if ($chunkIndex == $totalChunks - 1) {
-                $finalFileName = uniqid() . "." . $file->getClientOriginalExtension();
-                $finalFilePath = "{$basePath}/{$finalFileName}";
-
-                try {
-                    $fp = fopen($finalFilePath, 'w');
-
-                    for ($i = 0; $i < $totalChunks; $i++) {
-                        $chunkPath = "{$basePath}/{$fileName}.part{$i}";
-                        if (!file_exists($chunkPath)) {
-                            throw new \Exception("Fragmento {$i} no encontrado.");
-                        }
-
-                        $chunk = fopen($chunkPath, 'r');
-                        stream_copy_to_stream($chunk, $fp);
-                        fclose($chunk);
-                        unlink($chunkPath); // Borra el fragmento
-                    }
-
-                    fclose($fp);
-                } catch (\Exception $e) {
-                    // Limpiar archivos temporales en caso de error
-                    for ($i = 0; $i < $totalChunks; $i++) {
-                        $chunkPath = "{$basePath}/{$fileName}.part{$i}";
-                        if (file_exists($chunkPath)) {
-                            unlink($chunkPath);
-                        }
-                    }
-                    throw $e;
-                }
-            }
-
-            if ($finalFileName) {
-                // Ruta pública accesible desde la web
-                return response()->json(['path' => "{$folder}/{$finalFileName}"]);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+        // Verifica si el archivo se subió correctamente
+        if (!$receiver->isUploaded()) {
+            throw new UploadMissingFileException();
         }
+
+        // Recibe el archivo y gestiona los fragmentos
+        $save = $receiver->receive();
+
+        if ($save->isFinished()) {
+            $file = $save->getFile();
+            $fileName = uniqid() . "." . $file->getClientOriginalExtension();
+            $folder = $folder_context;
+
+            Storage::disk('public')->put("{$folder}/{$fileName}", $file->getContent());
+
+           // $path = $file->storeAs("public/{$folder}", $fileName);
+            $url = "{$folder}/{$fileName}"; // URL pública
+
+
+            return response()->json(['path' => $url]);
+        }
+
+        // Modo chunking, responde con progreso
+        $handler = $save->handler();
+        return response()->json(["done" => $handler->getPercentageDone(), 'status' => true]);
     }
 
 }
