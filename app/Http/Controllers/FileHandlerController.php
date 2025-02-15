@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Pion\Laravel\ChunkUpload\Exceptions\UploadFailedException;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -14,6 +13,7 @@ class FileHandlerController extends Controller
 
     public function uploadResource(Request $request)
     {
+
         $context = $request->input('context', 'otros');
         $folder_context = match ($context) {
             'biblioteca.create' => 'recursos',
@@ -24,35 +24,32 @@ class FileHandlerController extends Controller
             default => 'otros',
         };
 
-        try {
-            // Crea el receptor de archivos
-            $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
+        // Crea el receptor de archivos
+        $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
 
-            // Verifica si el archivo se subió correctamente
-            if (!$receiver->isUploaded()) {
-                return response()->json(['error' => 'No se ha subido ningún archivo'], 500);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+        // Verifica si el archivo se subió correctamente
+        if (!$receiver->isUploaded()) {
+            throw new UploadMissingFileException();
         }
 
-        try {
-            // Recibe el archivo y gestiona los fragmentos
-            $save = $receiver->receive();
+        // Recibe el archivo y gestiona los fragmentos
+        $save = $receiver->receive();
 
-            if ($save->isFinished()) {
-                $file = $save->getFile();
-                $fileName = uniqid() . "." . $file->getClientOriginalExtension();
-                $folder = $folder_context;
+        if ($save->isFinished()) {
+            $file = $save->getFile();
+            $fileName = uniqid() . "." . $file->getClientOriginalExtension();
+            $folder = $folder_context;
 
-                Storage::disk('public')->put("{$folder}/{$fileName}", $file->getContent());
+            Storage::disk('public')->put("{$folder}/{$fileName}", $file->getContent());
 
-                $url = "{$folder}/{$fileName}"; // URL pública
-                return response()->json(['path' => $url]);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+           // $path = $file->storeAs("public/{$folder}", $fileName);
+            $url = "{$folder}/{$fileName}"; // URL pública
+            return response()->json(['path' => $url]);
         }
+
+        // Modo chunking, responde con progreso
+        $handler = $save->handler();
+        return response()->json(["done" => $handler->getPercentageDone(), 'status' => true]);
     }
 
 }
