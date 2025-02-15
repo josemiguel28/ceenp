@@ -1,4 +1,4 @@
-@php use Illuminate\Support\Facades\Storage; @endphp
+@php use App\Enums\UserRoles;use Illuminate\Support\Facades\Storage; @endphp
 <div class="bg-white p-6 rounded-lg shadow-md">
     <h3 class="text-xl font-bold mb-4 text-gray-700">Recursos de este curso</h3>
 
@@ -19,8 +19,8 @@
             @endphp
 
             <div
-                class="bg-gray-100 rounded-lg p-4 flex items-center justify-between md:flex-col md:items-start md:gap-4">
-                <div class="flex items-center space-x-4">
+                class="bg-gray-100 rounded-lg p-4 flex flex-col space-y-6 items-center justify-between md:flex-col md:items-start">
+                <div class="flex items-center space-x-4 w-full line-clamp-4 truncate">
                     @if(in_array($fileExtension, ['mp4', 'mov', 'avi', 'webm']))
                         <!-- Ícono de video -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
@@ -57,32 +57,40 @@
                         </svg>
                     @endif
 
-                    <div>
-                        <div class="text-lg font-semibold">{{ $material->titulo }}</div>
-                        <div class="text-sm text-gray-600">{{ strtoupper($fileExtension) }}</div>
+                    <div class="w-full sm:truncate line-clamp-4">
+                        <div class="text-lg font-semibold truncate" title="{{ $material->titulo }}">
+                            {{ $material->titulo }}
+                        </div>
+                        <div class="text-sm text-gray-600 uppercase truncate">
+                            {{ strtoupper($fileExtension) }}
+                        </div>
                     </div>
+
                 </div>
 
-                <a href="{{ $fileUrl }}" target="_blank"
-                   class="bg-secondary-default text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition text-center md:w-full ">
-                    Ver material
-                </a>
+                <div class="flex flex-col w-full space-y-4 items-center justify-center md:items-start">
 
-                @if(auth()->user()->role_id == 3)
+                    <a href="{{ $fileUrl }}" target="_blank">
+                        <x-primary-button>
+                            Ver material
+                        </x-primary-button>
+                    </a>
 
-                    <form action="{{ route('maestro.materias.recurso.destroy', $material) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
+                    @if(auth()->user()->role_id == UserRoles::MAESTRO)
 
-                        <button type="submit"
-                                class=" text-red-500 px-4 py-2 rounded-lg hover:bg-red-200 transition text-center md:w-full ">
+                        <form action="{{ route('maestro.materias.recurso.destroy', $material) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
 
-                            Eliminar material
-                        </button>
-                    </form>
+                            <button type="submit"
+                                    class=" text-red-500 px-4 py-2 rounded-lg hover:bg-red-200 transition text-center md:w-full ">
+                                Eliminar material
+                            </button>
+                        </form>
 
-                @endif
+                    @endif
 
+                </div>
             </div>
         @endforeach
     </div>

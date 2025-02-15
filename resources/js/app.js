@@ -25,11 +25,30 @@ const dropzone = new Dropzone("#dropzone", {
         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
     },
     success: function (file, response) {
-       const path =  document.getElementById('archivo_path').value = response.path
-       console.log(path)
+       document.getElementById('archivo_path').value = response.path
+
+        toastr["info"]("El archivo se ha subido.", "Completado")
+
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
     },
     error: function (file, message) {
-        toastr["error"](message)
+        toastr["error"](message.error)
 
         toastr.options = {
             "closeButton": false,
@@ -49,11 +68,7 @@ const dropzone = new Dropzone("#dropzone", {
             "hideMethod": "fadeOut"
         }
         this.removeFile(file)
-    },
-    uploadprogress: function (file, progress, bytesSent) {
-        file.previewElement.querySelector(".dz-upload").style.width = progress + "%";
     }
-
 });
 
 
