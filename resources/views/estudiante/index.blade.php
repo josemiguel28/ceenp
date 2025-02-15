@@ -6,6 +6,8 @@
 
 @section('content')
 
+    <x-error-message />
+
     <div class="container mx-auto px-4 py-8">
 
         <div class="bg-blue-900 text-white p-5 rounded-lg mb-8 relative h-32 lg:p-8">

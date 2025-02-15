@@ -34,7 +34,7 @@ Route::middleware('role:1')->group(function () {
 });
 
 // 🔹 RUTAS PARA ESTUDIANTES
-Route::middleware(['auth', 'role:2'])->group(function () {
+Route::middleware('role:2')->group(function () {
     Route::prefix('estudiante')->name('estudiante.')->group(function () {
         Route::get('/dashboard', [EstudianteController::class, 'index'])->name('dashboard.index');
         Route::get('/materias/{materia}', [EstudianteController::class, 'show'])->name('show');
@@ -45,7 +45,7 @@ Route::middleware(['auth', 'role:2'])->group(function () {
 });
 
 // 🔹 RUTAS PARA MAESTROS
-Route::middleware(['auth', 'role:3'])->group(function () {
+Route::middleware('role:3')->group(function () {
     Route::prefix('maestro')->name('maestro.')->group(function () {
         Route::get('/dashboard', [MaestroController::class, 'index'])->name('dashboard.index');
         Route::get('/materias/{materia}', [MaestroController::class, 'show'])->name('show');

@@ -4,8 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="Plataforma educativa para el CEENP">
+    <meta name="author" content="CEENP">
+    <meta name="robots" content="noindex, nofollow">
 
     <title>{{ config('app.name', 'CEENP') }}</title>
+
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 
     <!-- Alpine.js CDN -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>

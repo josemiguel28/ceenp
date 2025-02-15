@@ -2,6 +2,9 @@
     <h1 class="font-semibold text-2xl">Panel de administrador</h1>
     <p class="text-gray-500">Hola <span class="font-semibold"> {{ $crrntUser }} </span>👋 !Bienvenido de nuevo!</p>
 
+    <!-- Mensaje de error -->
+    <x-error-message/>
+
     <!-- Estadísticas -->
     <div class="grid grid-cols-1 gap-4 mt-8 mb-16 md:grid-cols-2 lg:grid-cols-3">
         <div class="bg-white rounded-2xl shadow-md p-6 flex items-center space-x-4">

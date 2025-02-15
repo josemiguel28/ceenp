@@ -91,6 +91,8 @@
                     <div class="fallback">
                         <input name="file" type="file"/>
                     </div>
+
+                    <span class="text-center text-sm text-gray-400">Archivo PDF</span>
                 </form>
 
             </div>

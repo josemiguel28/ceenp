@@ -50,6 +50,10 @@ const dropzone = new Dropzone("#dropzone", {
         }
         this.removeFile(file)
     },
+    uploadprogress: function (file, progress, bytesSent) {
+        file.previewElement.querySelector(".dz-upload").style.width = progress + "%";
+    }
+
 });
 
 

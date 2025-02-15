@@ -1,5 +1,7 @@
 @extends('layouts.user')
 
+@section('title', 'Crear Recurso')
+
 @section('content')
 
     @push('styles')
