@@ -2,6 +2,11 @@
 
 @section('title', 'Calificar tarea' )
 
+@push('styles')
+    @livewireStyles
+@endpush
+
+
 @section('content')
     <div class="max-w-5xl mx-auto p-6">
 
@@ -17,7 +22,8 @@
             @if($entregas->isEmpty())
                 <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-700">No hay entregas</h3>
-                    <p class="text-gray-600 text-sm">Veras las entregas de esta tarea cuando los estudiantes hayan enviado su trabajo.</p>
+                    <p class="text-gray-600 text-sm">Veras las entregas de esta tarea cuando los estudiantes hayan
+                        enviado su trabajo.</p>
                 </div>
             @endif
 
@@ -57,18 +63,23 @@
 
                             <textarea name="observacion" id="observacion"
                                       class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                                      rows="2" placeholder="Escribe una observación">{{ old('observacion') }}{{ $entrega->comentario_maestro }}
+                                      rows="2"
+                                      placeholder="Escribe una observación">{{ old('observacion') }}{{ $entrega->comentario_maestro }}
                             </textarea>
 
                         </div>
 
-                        <x-primary-button :class="'mt-4'">
-                            ✅ Calificar
-                        </x-primary-button>
+                        <livewire:maestro.check-submissions :entregas="$entregas"  />
+
                     </form>
                 </div>
             @endforeach
         </div>
     </div>
+
+    @push('scripts')
+        @livewireScripts
+    @endpush
+
 
 @endsection

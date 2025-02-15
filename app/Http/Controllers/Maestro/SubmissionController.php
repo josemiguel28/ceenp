@@ -23,10 +23,6 @@ class SubmissionController extends Controller
 
     public function calificarEntrega(Request $request, Entrega $entrega)
     {
-        // Verificar que el maestro es el creador de la tarea asociada
-        if ($entrega->tarea->user_id !== Auth::id()) {
-            abort(403, 'No tienes permiso para calificar esta entrega.');
-        }
 
         // Validar la calificación
         $request->validate([
