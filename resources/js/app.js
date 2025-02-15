@@ -26,6 +26,26 @@ const dropzone = new Dropzone("#dropzone", {
     },
     success: function (file, response) {
        document.getElementById('archivo_path').value = response.path
+
+        toastr["info"]("El archivo se ha subido.", "Completado")
+
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
     },
     error: function (file, message) {
         toastr["error"](message.error)

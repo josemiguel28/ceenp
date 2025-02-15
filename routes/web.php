@@ -72,7 +72,6 @@ Route::middleware('role:3')->group(function () {
     });
 });
 
-// 🔹 RUTAS DE PERFIL
 Route::middleware('auth')->group(function () {
     // Ruta para subir recursos (PDF, imágenes, etc.)
     Route::post('/uploads', [FileHandlerController::class, 'uploadResource'])->name('upload.resources');
