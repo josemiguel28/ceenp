@@ -8,7 +8,7 @@ use App\Models\Tarea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SubmissionController extends Controller
+class   SubmissionController extends Controller
 {
     public function verEntregas(Tarea $tarea)
     {
