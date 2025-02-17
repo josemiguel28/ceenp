@@ -29,7 +29,7 @@
 
         <div class="text-center md:text-left">
             <p class="text-xl md:text-2xl md:font-semibold leading-tight">
-                Maestría en Neuropedagogía, cognición y didáctica (Testing)
+                Maestría en Neuropedagogía, cognición y didáctica
             </p>
         </div>
     </div>
