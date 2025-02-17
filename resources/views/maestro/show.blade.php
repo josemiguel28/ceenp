@@ -92,7 +92,7 @@
                             {{-- Información de la tarea --}}
                             <div class="flex flex-col md:flex-col gap-4 flex-grow">
                                 <a href="{{ route('maestro.edit.task', $tarea->id) }}"
-                                   class="font-semibold hover:underline truncate w-full md:w-auto"
+                                   class="font-semibold hover:underline truncate max-w-56 md:max-w-96"
                                    title="{{ $tarea->titulo }}">{{ $tarea->titulo }}</a>
 
                                 <div class="flex gap-4">
