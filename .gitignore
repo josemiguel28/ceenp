@@ -5,6 +5,12 @@
 /storage/*.key
 /storage/pail
 /storage/materiales
+/storage/app/public/*
+/storage/app/public
+/storage/app/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
 /storageLink.txt
 
 /vendor
