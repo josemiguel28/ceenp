@@ -6,6 +6,8 @@ use App\Mail\SendUserCredentials;
 use App\Models\Materia;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class CreateEstudianteController extends Controller
@@ -36,26 +38,44 @@ class CreateEstudianteController extends Controller
             'materias' => 'array|required',
         ]);
 
-        //genera una contraseña aleatoria
+        // Genera una contraseña aleatoria
         $password = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10);
 
-        // Crear el estudiante
-        $estudiante = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'matricula' => $request->matricula,
-            'role_id' => 2, // Rol asignado automáticamente
-            'password' => bcrypt($password),
-        ]);
+        DB::beginTransaction();
 
-        // Asignar materias al estudiante
-        if ($request->has('materias')) {
-            $estudiante->materiasStudents()->sync($request->materias);
+        try {
+            // Crear el estudiante
+            $estudiante = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'matricula' => $request->matricula,
+                'role_id' => 2, // Rol asignado automáticamente
+                'password' => bcrypt($password),
+            ]);
+
+            // Asignar materias al estudiante
+            if ($request->has('materias')) {
+                $estudiante->materiasStudents()->sync($request->materias);
+            }
+
+            // Enviar credenciales por correo
+            Mail::to($estudiante->email)->send(new SendUserCredentials($estudiante, $password));
+
+            DB::commit();
+
+            return redirect()->route('estudiantes.index')->with('success', 'Estudiante creado y credenciales enviadas con éxito.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error('Error al registrar estudiante o enviar correo: ' . $e->getMessage(), [
+                'exception' => $e,
+                'email' => $request->email,
+            ]);
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'No se pudo crear el estudiante porque falló el envío del correo de bienvenida. El registro no se guardó en la base de datos para evitar cuentas sin acceso. Motivo: ' . $e->getMessage());
         }
-
-        Mail::to($estudiante->email)->send(new SendUserCredentials($estudiante, $password));
-
-        return redirect()->route('estudiantes.index')->with('success', 'Estudiante creado con éxito.');
     }
 
     public function edit($id)
