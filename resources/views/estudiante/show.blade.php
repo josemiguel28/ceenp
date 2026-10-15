@@ -47,52 +47,65 @@
                 </div>
 
                 <h2 class="text-xl font-semibold mb-4 text-gray-700">Actividades Recientes</h2>
-                <ul class="space-y-6">
+                <ul class="space-y-4">
                     @if($tareas->isEmpty())
-                        <div
-                            class="bg-white rounded-lg overflow-hidden">
-                            <div class="p-4">
-                                <h3 class="text-sm">No tienes tareas publicadas</h3>
-                            </div>
+                        <div class="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-8 text-center">
+                            <p class="text-sm text-gray-500">No tienes tareas publicadas en esta materia.</p>
                         </div>
                     @endif
 
                     @foreach($tareas as $tarea)
-                        <li class="flex flex-wrap items-center justify-between bg-gray-100 p-4 rounded-lg gap-4 md:flex-nowrap">
-                            <!-- Icono de estado -->
-                            @if($tarea->entregada)
-                                <span class="mr-2">✅</span>
-                            @else
-                                <span class="mr-2">⏳</span>
-                            @endif
+                        <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-50 hover:bg-gray-100/90 border border-gray-200 rounded-xl p-4 transition-colors duration-150">
+                            <!-- Icono y datos de la tarea -->
+                            <div class="flex items-center gap-3.5 min-w-0 flex-1">
+                                <!-- Icono de estado -->
+                                <div class="flex-shrink-0">
+                                    @if($tarea->entregada)
+                                        <span class="flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600" title="Tarea entregada">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                    @else
+                                        <span class="flex items-center justify-center w-10 h-10 rounded-lg bg-amber-100 text-amber-600" title="Tarea pendiente">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </span>
+                                    @endif
+                                </div>
 
-                            <!-- Icono del documento -->
-                            <span class="text-gray-600 hidden md:block">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24">
-                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                       stroke-width="1.5">
-                                        <path
-                                            d="M3.5 9.368c0-3.473 0-5.21 1.025-6.289S7.2 2 10.5 2h3c3.3 0 4.95 0 5.975 1.08C20.5 4.157 20.5 5.894 20.5 9.367v5.264c0 3.473 0 5.21-1.025 6.289S16.8 22 13.5 22h-3c-3.3 0-4.95 0-5.975-1.08C3.5 19.843 3.5 18.106 3.5 14.633z"/>
-                                        <path
-                                            d="m8 2l.082.493c.2 1.197.3 1.796.72 2.152C9.22 5 9.827 5 11.041 5h1.917c1.213 0 1.82 0 2.24-.355c.42-.356.52-.955.719-2.152L16 2M8 16h4m-4-5h8"/>
-                                    </g>
-                                </svg>
-                             </span>
-
-                            <!-- Información de la tarea -->
-                            <div class="flex flex-col md:flex-row md:items-center gap-4 flex-grow">
-                                <a href="{{ route('estudiante.view.task', $tarea->id) }}"
-                                   class="font-semibold hover:underline truncate w-full md:w-auto text-regular"
-                                   title="{{ $tarea->titulo }}">{{ $tarea->titulo }}</a>
+                                <!-- Información de la tarea -->
+                                <div class="min-w-0 flex-1">
+                                    <a href="{{ route('estudiante.view.task', $tarea->id) }}"
+                                       class="font-semibold text-gray-800 hover:text-blue-600 transition block truncate text-base"
+                                       title="{{ $tarea->titulo }}">
+                                        {{ $tarea->titulo }}
+                                    </a>
+                                    <div class="flex items-center gap-2 mt-1 text-xs text-gray-500">
+                                        @if($tarea->entregada)
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                Entregada
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                                                Pendiente
+                                            </span>
+                                        @endif
+                                        <span class="text-gray-300">•</span>
+                                        <span class="truncate">
+                                            {{ \Carbon\Carbon::parse($tarea->fecha_entrega)->translatedFormat('d F Y, h:i A') }}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- Fecha de entrega y botón -->
-                            <div class="flex items-center gap-4 flex-col w-full lg:w-auto lg:flex-row">
-                                <span class="text-gray-500 text-sm md:text-base whitespace-nowrap">
-                                    {{ \Carbon\Carbon::parse($tarea->fecha_entrega)->translatedFormat('d F Y h:i A') }}
-                                </span>
-                                <a class="text-white px-4 py-2 bg-yellow-500 rounded-xl hover:underline w-full text-center"
-                                   href="{{ route('estudiante.view.task', $tarea->id) }}">Ver tarea</a>
+                            <!-- Botón de acción -->
+                            <div class="flex-shrink-0 sm:self-center">
+                                <a href="{{ route('estudiante.view.task', $tarea->id) }}"
+                                   class="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg shadow-sm transition whitespace-nowrap">
+                                    Ver tarea
+                                </a>
                             </div>
                         </li>
                     @endforeach
